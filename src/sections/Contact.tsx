@@ -32,8 +32,8 @@ export default function Contact() {
                 variants={fadeInUp}
                 className="flex items-center gap-3"
               >
-                <div className="w-10 h-10 rounded-lg bg-accent-amber/10 flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-accent-amber" />
+                <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="text-sm text-muted">Email</p>
@@ -45,8 +45,8 @@ export default function Contact() {
                 variants={fadeInUp}
                 className="flex items-center gap-3"
               >
-                <div className="w-10 h-10 rounded-lg bg-accent-rose/10 flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-accent-rose" />
+                <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="text-sm text-muted">Location</p>
@@ -62,14 +62,14 @@ export default function Contact() {
               <div className="flex gap-3">
                 <a
                   href="#"
-                  className="w-10 h-10 rounded-lg bg-card border border-border flex items-center justify-center text-muted hover:text-accent-amber hover:border-accent-amber/30 transition-all"
+                  className="w-10 h-10 rounded-lg bg-card border border-border flex items-center justify-center text-muted hover:text-white hover:border-white/20 transition-all"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a
                   href="#"
-                  className="w-10 h-10 rounded-lg bg-card border border-border flex items-center justify-center text-muted hover:text-accent-amber hover:border-accent-amber/30 transition-all"
+                  className="w-10 h-10 rounded-lg bg-card border border-border flex items-center justify-center text-muted hover:text-white hover:border-white/20 transition-all"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />
@@ -88,21 +88,21 @@ export default function Contact() {
                 <input
                   type="text"
                   placeholder="Your Name"
-                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent-amber/50 transition-colors"
+                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-white placeholder:text-muted/50 focus:outline-none focus:border-white/30 transition-colors"
                 />
               </div>
               <div>
                 <input
                   type="email"
                   placeholder="Your Email"
-                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent-amber/50 transition-colors"
+                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-white placeholder:text-muted/50 focus:outline-none focus:border-white/30 transition-colors"
                 />
               </div>
               <div>
                 <textarea
                   rows={5}
                   placeholder="Tell me about your project..."
-                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent-amber/50 transition-colors resize-none"
+                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-white placeholder:text-muted/50 focus:outline-none focus:border-white/30 transition-colors resize-none"
                 />
               </div>
               <Button type="submit" className="w-full">

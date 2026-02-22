@@ -21,38 +21,38 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Profile Image */}
           <motion.div variants={slideInLeft} className="flex justify-center">
-            <div className="relative">
-              <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-card border-2 border-border overflow-hidden flex items-center justify-center">
+            <div className="relative group">
+              <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-card border border-border overflow-hidden flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
                 <div className="text-center text-muted">
-                  <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-accent-amber/20 flex items-center justify-center">
+                  <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-white/5 flex items-center justify-center">
                     <span className="text-3xl">📸</span>
                   </div>
                   <p className="text-sm">Your Photo Here</p>
                 </div>
               </div>
-              {/* Decorative ring */}
-              <div className="absolute -inset-3 rounded-full border border-accent-amber/20 -z-10" />
-              <div className="absolute -inset-6 rounded-full border border-accent-rose/10 -z-10" />
+              {/* Decorative rings */}
+              <div className="absolute -inset-3 rounded-full border border-white/10 -z-10 transition-transform duration-500 group-hover:scale-105" />
+              <div className="absolute -inset-6 rounded-full border border-white/5 -z-10 transition-transform duration-700 group-hover:scale-105" />
             </div>
           </motion.div>
 
           {/* Right: Content */}
           <motion.div variants={slideInRight} className="space-y-6">
             <div>
-              <p className="text-accent-amber font-medium text-sm tracking-widest uppercase mb-2">
+              <p className="text-muted font-medium text-sm tracking-[0.3em] uppercase mb-2">
                 Hi, I&apos;m
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
                 {aboutData.name}
               </h2>
-              <p className="text-xl md:text-2xl gradient-text font-semibold mt-1">
+              <p className="text-xl md:text-2xl text-muted font-semibold mt-1">
                 {aboutData.title}
               </p>
             </div>
 
             <p className="text-muted leading-relaxed">{aboutData.bio}</p>
 
-            <p className="text-lg font-medium italic text-foreground/80">
+            <p className="text-lg font-medium italic text-white/80 border-l-2 border-white/20 pl-4">
               &ldquo;{aboutData.valueStatement}&rdquo;
             </p>
 
@@ -63,7 +63,7 @@ export default function About() {
               </p>
               <div className="flex flex-wrap gap-2">
                 {aboutData.platforms.map((platform) => (
-                  <Badge key={platform.name} variant="amber">
+                  <Badge key={platform.name} variant="outline">
                     {platformIcons[platform.name]}
                     {platform.name}
                   </Badge>
@@ -77,7 +77,7 @@ export default function About() {
                 variants={fadeInUp}
                 className="bg-card border border-border rounded-xl p-4"
               >
-                <p className="text-2xl font-bold gradient-text">
+                <p className="text-2xl font-bold text-white">
                   {aboutData.experience}
                 </p>
                 <p className="text-sm text-muted">Experience</p>
@@ -86,7 +86,7 @@ export default function About() {
                 variants={fadeInUp}
                 className="bg-card border border-border rounded-xl p-4"
               >
-                <p className="text-2xl font-bold gradient-text">
+                <p className="text-2xl font-bold text-white">
                   {aboutData.industries.length}+
                 </p>
                 <p className="text-sm text-muted">Industries</p>
@@ -100,7 +100,7 @@ export default function About() {
               </p>
               <div className="flex flex-wrap gap-2">
                 {aboutData.strategyStyle.map((style) => (
-                  <Badge key={style} variant="teal">
+                  <Badge key={style} variant="outline">
                     {style}
                   </Badge>
                 ))}

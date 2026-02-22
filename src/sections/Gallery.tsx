@@ -38,10 +38,10 @@ export default function Gallery() {
             <button
               key={cat.value}
               onClick={() => setActiveCategory(cat.value)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeCategory === cat.value
-                  ? "bg-accent-amber text-white"
-                  : "bg-card text-muted hover:text-foreground border border-border"
+                  ? "bg-white text-[#211914]"
+                  : "bg-card text-muted hover:text-white border border-border"
               }`}
             >
               {cat.label}
@@ -63,33 +63,29 @@ export default function Gallery() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className="aspect-square rounded-xl border border-border overflow-hidden group relative cursor-pointer"
+                className="aspect-square rounded-xl border border-border overflow-hidden group relative"
+                data-hover
               >
-                {/* Colored placeholder */}
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: `linear-gradient(135deg, ${item.color}20, ${item.color}05)`,
-                  }}
-                />
+                {/* Placeholder background */}
+                <div className="absolute inset-0 bg-card" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div
-                    className="w-12 h-12 rounded-full opacity-20"
-                    style={{ backgroundColor: item.color }}
-                  />
+                  <div className="w-12 h-12 rounded-full bg-white/5" />
                 </div>
 
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-4">
-                  <div>
-                    <p className="font-medium text-sm">{item.title}</p>
-                    <p className="text-xs text-muted mt-1">
+                {/* Hover overlay with scale effect */}
+                <div className="absolute inset-0 bg-linear-to-t from-[#211914] via-[#211914]/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end p-4">
+                  <motion.div
+                    initial={false}
+                    className="translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+                  >
+                    <p className="font-medium text-sm text-white">{item.title}</p>
+                    <p className="text-xs text-white/60 mt-1">
                       {item.description}
                     </p>
-                    <Badge variant="amber" className="mt-2 text-xs">
+                    <Badge variant="outline" className="mt-2 text-xs">
                       {item.platform}
                     </Badge>
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
             ))}

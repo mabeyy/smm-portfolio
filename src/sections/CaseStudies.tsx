@@ -8,13 +8,6 @@ import Badge from "@/components/UI/Badge";
 import { fadeInUp } from "@/helpers/motion";
 import { caseStudies } from "@/data/caseStudies";
 
-const platformVariant: Record<string, "amber" | "rose" | "teal"> = {
-  Instagram: "amber",
-  TikTok: "rose",
-  Facebook: "teal",
-  LinkedIn: "teal",
-};
-
 export default function CaseStudies() {
   return (
     <AnimatedSection id="case-studies" className="py-20 md:py-32">
@@ -32,7 +25,7 @@ export default function CaseStudies() {
                   {/* Left: Image placeholder */}
                   <div className="aspect-video md:aspect-square rounded-xl bg-card-hover border border-border flex items-center justify-center overflow-hidden">
                     <div className="text-center text-muted p-6">
-                      <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-accent-amber/10 flex items-center justify-center">
+                      <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-white/5 flex items-center justify-center">
                         <span className="text-2xl">📊</span>
                       </div>
                       <p className="text-sm font-medium">{study.client}</p>
@@ -43,21 +36,21 @@ export default function CaseStudies() {
                   {/* Right: Content */}
                   <div className="space-y-4">
                     <div>
-                      <Badge variant="amber" className="mb-2">
+                      <Badge variant="outline" className="mb-2">
                         {study.industry}
                       </Badge>
                       <h3 className="text-2xl font-bold">{study.client}</h3>
                     </div>
 
                     <div>
-                      <p className="text-sm font-medium text-accent-amber mb-1">
+                      <p className="text-sm font-medium text-white mb-1">
                         Goal
                       </p>
                       <p className="text-muted text-sm">{study.goal}</p>
                     </div>
 
                     <div>
-                      <p className="text-sm font-medium text-accent-rose mb-1">
+                      <p className="text-sm font-medium text-white mb-1">
                         Strategy
                       </p>
                       <p className="text-muted text-sm">{study.strategy}</p>
@@ -65,10 +58,7 @@ export default function CaseStudies() {
 
                     <div className="flex flex-wrap gap-2">
                       {study.platforms.map((platform) => (
-                        <Badge
-                          key={platform}
-                          variant={platformVariant[platform] || "default"}
-                        >
+                        <Badge key={platform}>
                           {platform}
                         </Badge>
                       ))}
@@ -79,14 +69,21 @@ export default function CaseStudies() {
                 {/* Results grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-border">
                   {study.results.map((result) => (
-                    <div key={result.label} className="text-center">
-                      <p className="text-xl md:text-2xl font-bold gradient-text">
+                    <motion.div
+                      key={result.label}
+                      className="text-center"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <p className="text-xl md:text-2xl font-bold text-white">
                         {result.value}
                       </p>
                       <p className="text-xs md:text-sm text-muted mt-1">
                         {result.label}
                       </p>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </Card>

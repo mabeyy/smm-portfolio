@@ -21,12 +21,12 @@ export default function Testimonials() {
           {testimonials.map((testimonial) => (
             <motion.div key={testimonial.id} variants={fadeInUp}>
               <Card className="h-full flex flex-col">
-                <Quote className="w-8 h-8 text-accent-amber/40 mb-4" />
+                <Quote className="w-8 h-8 text-white/20 mb-4" />
                 <p className="text-muted leading-relaxed flex-1 italic">
                   &ldquo;{testimonial.quote}&rdquo;
                 </p>
                 <div className="mt-6 pt-4 border-t border-border flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-amber/30 to-accent-rose/30 flex items-center justify-center text-sm font-bold">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-white">
                     {testimonial.name.charAt(0)}
                   </div>
                   <div>
