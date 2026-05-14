@@ -36,10 +36,10 @@ export default function ToolsSkills() {
               className="bg-card border border-border rounded-3xl p-7 md:p-8 flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-9 h-9 rounded-full bg-paper border border-border flex items-center justify-center text-accent">
+                <div className="w-9 h-9 rounded-full bg-paper border border-border flex items-center justify-center text-brand">
                   {iconMap[group.icon]}
                 </div>
-                <h3 className="text-sm uppercase tracking-[0.18em] text-muted">
+                <h3 className="text-sm uppercase tracking-[0.18em] text-muted-foreground">
                   {group.category}
                 </h3>
               </div>
@@ -53,7 +53,7 @@ export default function ToolsSkills() {
                     <span className="font-display italic text-2xl text-foreground leading-tight">
                       {item}
                     </span>
-                    <span className="font-mono text-xs text-muted">
+                    <span className="font-mono text-xs text-muted-foreground">
                       ✦
                     </span>
                   </li>

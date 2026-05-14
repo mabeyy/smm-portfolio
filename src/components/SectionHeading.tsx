@@ -36,11 +36,11 @@ export default function SectionHeading({
       <h2 className="font-display text-[clamp(2.25rem,5vw,4rem)] leading-[1.05] tracking-tight">
         {title}{" "}
         {italicWord && (
-          <span className="italic text-accent">{italicWord}</span>
+          <span className="italic text-brand">{italicWord}</span>
         )}
       </h2>
       {subtitle && (
-        <p className="mt-5 text-base md:text-lg text-muted leading-relaxed max-w-2xl">
+        <p className="mt-5 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">
           {subtitle}
         </p>
       )}

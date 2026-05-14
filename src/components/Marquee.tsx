@@ -23,7 +23,7 @@ export default function Marquee({
             className="mx-8 font-display italic text-3xl md:text-5xl text-foreground/15 select-none"
           >
             {item}
-            <span className="mx-8 text-accent/30 not-italic">{separator}</span>
+            <span className="mx-8 text-brand/30 not-italic">{separator}</span>
           </span>
         ))}
       </div>

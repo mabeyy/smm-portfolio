@@ -34,14 +34,14 @@ export default function Experience() {
                 {/* Date column */}
                 <div className="md:pt-1 mb-4 md:mb-0">
                   <div className="hidden md:flex items-center gap-3">
-                    <span className="font-mono text-xs text-muted">
+                    <span className="font-mono text-xs text-muted-foreground">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                   </div>
                   <p className="font-display italic text-2xl md:text-lg md:not-italic md:font-medium md:font-sans text-foreground mt-1 md:mt-3">
                     {exp.period}
                   </p>
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted mt-1">
+                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mt-1">
                     {exp.type}
                   </p>
                 </div>
@@ -53,9 +53,9 @@ export default function Experience() {
                       <h3 className="font-display text-3xl md:text-5xl leading-[1.05] tracking-tight">
                         {exp.client}
                       </h3>
-                      <p className="text-muted mt-2 text-base">{exp.role}</p>
+                      <p className="text-muted-foreground mt-2 text-base">{exp.role}</p>
                     </div>
-                    <ArrowUpRight className="w-6 h-6 text-muted shrink-0" />
+                    <ArrowUpRight className="w-6 h-6 text-muted-foreground shrink-0" />
                   </div>
 
                   <p className="mt-6 text-foreground/80 leading-relaxed max-w-3xl">
@@ -68,7 +68,7 @@ export default function Experience() {
                         key={i}
                         className="flex gap-3 text-sm md:text-base text-foreground/85 leading-relaxed"
                       >
-                        <span className="font-mono text-xs text-accent mt-1.5 shrink-0">
+                        <span className="font-mono text-xs text-brand mt-1.5 shrink-0">
                           /{String(i + 1).padStart(2, "0")}
                         </span>
                         <span>{h}</span>
@@ -86,7 +86,7 @@ export default function Experience() {
                           <span className="font-display text-xl text-foreground">
                             {m.value}
                           </span>
-                          <span className="text-xs text-muted">{m.label}</span>
+                          <span className="text-xs text-muted-foreground">{m.label}</span>
                         </div>
                       ))}
                     </div>

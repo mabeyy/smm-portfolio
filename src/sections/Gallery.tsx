@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionHeading from "@/components/SectionHeading";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { fadeInUp } from "@/helpers/motion";
 import {
   galleryCategories,
@@ -34,24 +35,28 @@ export default function Gallery() {
           subtitle="A sample of formats — posts, reels, captions, and carousels — across the brands I've supported. Filter by format below."
         />
 
-        {/* Filter tabs */}
-        <motion.div
-          variants={fadeInUp}
-          className="flex flex-wrap gap-2 mb-12"
-        >
-          {galleryCategories.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => setActiveCategory(cat.value)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                activeCategory === cat.value
-                  ? "bg-foreground text-background"
-                  : "bg-card text-muted hover:text-foreground border border-border"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+        {/* Filter */}
+        <motion.div variants={fadeInUp} className="mb-12">
+          <ToggleGroup
+            type="single"
+            value={activeCategory}
+            onValueChange={(v) => {
+              if (v) setActiveCategory(v as GalleryCategory);
+            }}
+            spacing={8}
+            className="flex-wrap"
+          >
+            {galleryCategories.map((cat) => (
+              <ToggleGroupItem
+                key={cat.value}
+                value={cat.value}
+                variant="outline"
+                className="rounded-full data-[state=on]:bg-foreground data-[state=on]:text-background data-[state=on]:border-foreground"
+              >
+                {cat.label}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
         </motion.div>
 
         {/* Gallery grid */}
@@ -99,7 +104,7 @@ export default function Gallery() {
           </AnimatePresence>
         </motion.div>
 
-        <p className="mt-10 text-sm text-muted">
+        <p className="mt-10 text-sm text-muted-foreground">
           Tiles are placeholders — replace with real exports from the campaigns
           you want to feature.
         </p>

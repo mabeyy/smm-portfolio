@@ -36,7 +36,7 @@ export default function Hero() {
               className="font-display text-[clamp(3rem,9vw,7.5rem)] leading-[0.95] tracking-tight"
             >
               JV Paula <br />
-              <span className="italic text-accent">Villaflor</span>
+              <span className="italic text-brand">Villaflor</span>
               <span className="text-foreground">.</span>
             </motion.h1>
 
@@ -44,7 +44,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.35 }}
-              className="mt-8 max-w-xl text-base md:text-lg text-muted leading-relaxed"
+              className="mt-8 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed"
             >
               Social Media Manager building cohesive, organic-first brand
               presences for lifestyle and product brands — content planning,
@@ -84,19 +84,19 @@ export default function Hero() {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <p className="font-display text-4xl text-foreground">250K+</p>
-                <p className="text-xs text-muted mt-1 tracking-wide">
+                <p className="text-xs text-muted-foreground mt-1 tracking-wide">
                   Peak organic views on a single post
                 </p>
               </div>
               <div>
                 <p className="font-display text-4xl text-foreground">33K+</p>
-                <p className="text-xs text-muted mt-1 tracking-wide">
+                <p className="text-xs text-muted-foreground mt-1 tracking-wide">
                   Engagements without ad spend
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-muted">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="w-4 h-4" />
               Cagayan de Oro · Open to remote
             </div>
@@ -107,7 +107,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 1 }}
-          className="mt-20 flex items-center gap-3 text-xs uppercase tracking-[0.28em] text-muted"
+          className="mt-20 flex items-center gap-3 text-xs uppercase tracking-[0.28em] text-muted-foreground"
         >
           <ArrowDown className="w-4 h-4 animate-bounce" />
           Scroll for the work

@@ -1,18 +1,38 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 :root {
+  /* shadcn light theme tokens */
   --background: #faf7f2;
   --foreground: #1c1611;
-  --muted: #6b6259;
-  --muted-soft: #a39988;
   --card: #ffffff;
-  --card-hover: #f3eee5;
+  --card-foreground: #1c1611;
+  --popover: #ffffff;
+  --popover-foreground: #1c1611;
+  --primary: #1c1611;
+  --primary-foreground: #faf7f2;
+  --secondary: #f3eee5;
+  --secondary-foreground: #1c1611;
+  --muted: #f3eee5;
+  --muted-foreground: #6b6259;
+  --accent: #f3eee5;
+  --accent-foreground: #1c1611;
+  --destructive: #d94545;
+  --destructive-foreground: #ffffff;
   --border: #e8e2d6;
-  --border-strong: #d4ccbe;
-  --accent: #6b7a5e;
-  --accent-hover: #59674e;
-  --accent-foreground: #ffffff;
+  --input: #e8e2d6;
+  --ring: #6b7a5e;
+  --radius: 0.75rem;
+
+  /* project custom tokens */
+  --brand: #6b7a5e;
+  --brand-foreground: #ffffff;
+  --brand-hover: #59674e;
   --paper: #f3eee5;
+  --border-strong: #d4ccbe;
+  --muted-soft: #a39988;
+
+  /* fonts */
   --font-sans: "Geist", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Instrument Serif", "Times New Roman", serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -21,19 +41,38 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-muted-soft: var(--muted-soft);
   --color-card: var(--card);
-  --color-card-hover: var(--card-hover);
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-hover: var(--brand-hover);
   --color-paper: var(--paper);
+  --color-border-strong: var(--border-strong);
+  --color-muted-soft: var(--muted-soft);
+
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
 html {
@@ -53,7 +92,7 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--accent) 100%);
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--brand) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -64,7 +103,7 @@ body {
   letter-spacing: 0.28em;
   text-transform: uppercase;
   font-weight: 500;
-  color: var(--muted);
+  color: var(--muted-foreground);
 }
 
 ::-webkit-scrollbar {

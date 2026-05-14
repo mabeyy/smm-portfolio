@@ -43,10 +43,10 @@ export default function Services() {
               className="group bg-card hover:bg-card-hover transition-colors duration-500 p-8 md:p-10 flex flex-col"
             >
               <div className="flex items-center justify-between mb-8">
-                <span className="font-mono text-xs text-muted">
+                <span className="font-mono text-xs text-muted-foreground">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <div className="w-10 h-10 rounded-full bg-paper border border-border flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent transition-all duration-500">
+                <div className="w-10 h-10 rounded-full bg-paper border border-border flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-brand-foreground group-hover:border-brand transition-all duration-500">
                   {iconMap[service.icon]}
                 </div>
               </div>
@@ -54,7 +54,7 @@ export default function Services() {
               <h3 className="font-display text-2xl md:text-3xl leading-tight tracking-tight mb-3">
                 {service.title}
               </h3>
-              <p className="text-muted text-sm leading-relaxed">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 {service.description}
               </p>
             </motion.article>

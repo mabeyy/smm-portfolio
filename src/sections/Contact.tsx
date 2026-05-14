@@ -3,6 +3,9 @@ import { Mail, MapPin, Phone, Instagram } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionHeading from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { fadeInUp, slideInLeft, slideInRight } from "@/helpers/motion";
 
 const contactDetails = [
@@ -47,7 +50,7 @@ export default function Contact() {
                   const Icon = d.icon;
                   const inner = (
                     <>
-                      <div className="w-10 h-10 rounded-full bg-paper border border-border flex items-center justify-center shrink-0 text-accent">
+                      <div className="w-10 h-10 rounded-full bg-paper border border-border flex items-center justify-center shrink-0 text-brand">
                         <Icon className="w-4 h-4" />
                       </div>
                       <div>
@@ -67,7 +70,7 @@ export default function Contact() {
                       {d.href ? (
                         <a
                           href={d.href}
-                          className="flex items-start gap-4 hover:text-accent transition-colors"
+                          className="flex items-start gap-4 hover:text-brand transition-colors"
                         >
                           {inner}
                         </a>
@@ -102,67 +105,44 @@ export default function Contact() {
               onSubmit={(e) => e.preventDefault()}
             >
               <div className="grid sm:grid-cols-2 gap-5">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-xs text-muted uppercase tracking-[0.2em] mb-2"
-                  >
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="eyebrow">
                     Name
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    placeholder="Your name"
-                    className="w-full bg-background border border-border rounded-full px-5 py-3 text-foreground placeholder:text-muted/60 focus:outline-none focus:border-foreground/40 transition-colors"
-                  />
+                  </Label>
+                  <Input id="name" type="text" placeholder="Your name" />
                 </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-xs text-muted uppercase tracking-[0.2em] mb-2"
-                  >
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="eyebrow">
                     Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="you@brand.com"
-                    className="w-full bg-background border border-border rounded-full px-5 py-3 text-foreground placeholder:text-muted/60 focus:outline-none focus:border-foreground/40 transition-colors"
-                  />
+                  </Label>
+                  <Input id="email" type="email" placeholder="you@brand.com" />
                 </div>
               </div>
-              <div>
-                <label
-                  htmlFor="brand"
-                  className="block text-xs text-muted uppercase tracking-[0.2em] mb-2"
-                >
+              <div className="space-y-2">
+                <Label htmlFor="brand" className="eyebrow">
                   Brand
-                </label>
-                <input
+                </Label>
+                <Input
                   id="brand"
                   type="text"
                   placeholder="Brand name & link (optional)"
-                  className="w-full bg-background border border-border rounded-full px-5 py-3 text-foreground placeholder:text-muted/60 focus:outline-none focus:border-foreground/40 transition-colors"
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-xs text-muted uppercase tracking-[0.2em] mb-2"
-                >
+              <div className="space-y-2">
+                <Label htmlFor="message" className="eyebrow">
                   Project
-                </label>
-                <textarea
+                </Label>
+                <Textarea
                   id="message"
                   rows={5}
                   placeholder="Tell me a little about the brand and what you're looking for…"
-                  className="w-full bg-background border border-border rounded-3xl px-5 py-4 text-foreground placeholder:text-muted/60 focus:outline-none focus:border-foreground/40 transition-colors resize-none"
+                  className="resize-none"
                 />
               </div>
               <Button type="submit" className="w-full" size="lg">
                 Send the note
               </Button>
-              <p className="text-xs text-muted text-center pt-1">
+              <p className="text-xs text-muted-foreground text-center pt-1">
                 Or just email{" "}
                 <a
                   href="mailto:villaflorjvpaula@gmail.com"

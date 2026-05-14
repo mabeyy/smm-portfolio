@@ -10,13 +10,13 @@ export default function Footer() {
               href="#"
               className="font-display italic text-4xl md:text-5xl text-foreground leading-none"
             >
-              JV<span className="text-accent">.</span>
+              JV<span className="text-brand">.</span>
             </a>
-            <p className="mt-5 text-muted leading-relaxed">
+            <p className="mt-5 text-muted-foreground leading-relaxed">
               Social Media Manager — content planning, visual branding, and
               organic-first growth for lifestyle and product brands.
             </p>
-            <p className="mt-4 text-sm text-muted">
+            <p className="mt-4 text-sm text-muted-foreground">
               villaflorjvpaula@gmail.com · +63 997 356 9859
             </p>
           </div>
@@ -28,7 +28,7 @@ export default function Footer() {
                 <li key={l.href}>
                   <a
                     href={l.href}
-                    className="text-sm text-foreground hover:text-accent transition-colors"
+                    className="text-sm text-foreground hover:text-brand transition-colors"
                   >
                     {l.label}
                   </a>
@@ -38,7 +38,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-muted">
+        <div className="pt-8 border-t border-border flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-muted-foreground">
           <p>
             &copy; {new Date().getFullYear()} JV Paula Villaflor. All rights
             reserved.
