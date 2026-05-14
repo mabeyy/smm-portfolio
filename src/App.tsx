@@ -2,14 +2,13 @@ import Header from "@/components/header/Header";
 import Hero from "@/sections/Hero";
 import About from "@/sections/About";
 import Services from "@/sections/Services";
-import CaseStudies from "@/sections/CaseStudies";
+import Experience from "@/sections/Experience";
 import Gallery from "@/sections/Gallery";
-import Testimonials from "@/sections/Testimonials";
 import ToolsSkills from "@/sections/ToolsSkills";
 import Contact from "@/sections/Contact";
 import Footer from "@/sections/Footer";
 
-export default function Home() {
+export default function App() {
   return (
     <>
       <Header />
@@ -17,9 +16,8 @@ export default function Home() {
         <Hero />
         <About />
         <Services />
-        <CaseStudies />
+        <Experience />
         <Gallery />
-        <Testimonials />
         <ToolsSkills />
         <Contact />
       </main>

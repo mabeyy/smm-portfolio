@@ -1,124 +1,118 @@
-"use client";
-
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { type MouseEvent } from "react";
-import Button from "@/components/UI/Button";
+import { motion } from "framer-motion";
+import { ArrowDown, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Hero() {
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-
-  const blob1X = useSpring(useTransform(mouseX, [0, 1], [-40, 40]), { stiffness: 50, damping: 20 });
-  const blob1Y = useSpring(useTransform(mouseY, [0, 1], [-40, 40]), { stiffness: 50, damping: 20 });
-  const blob2X = useSpring(useTransform(mouseX, [0, 1], [30, -30]), { stiffness: 50, damping: 20 });
-  const blob2Y = useSpring(useTransform(mouseY, [0, 1], [30, -30]), { stiffness: 50, damping: 20 });
-  const blob3X = useSpring(useTransform(mouseX, [0, 1], [-20, 20]), { stiffness: 50, damping: 20 });
-  const blob3Y = useSpring(useTransform(mouseY, [0, 1], [20, -20]), { stiffness: 50, damping: 20 });
-
-  function handleMouseMove(e: MouseEvent<HTMLElement>) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width);
-    mouseY.set((e.clientY - rect.top) / rect.height);
-  }
-
   return (
-    <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      onMouseMove={handleMouseMove}
-    >
-      {/* Mouse-reactive background blobs */}
-      <div className="absolute inset-0 -z-10">
+    <section className="relative min-h-screen flex items-center pt-24 md:pt-32 pb-16 overflow-hidden">
+      {/* Subtle decorative paper texture using radial gradients */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 opacity-[0.5]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 30%, rgba(107,122,94,0.06), transparent 40%), radial-gradient(circle at 80% 70%, rgba(28,22,17,0.04), transparent 40%)",
+        }}
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid lg:grid-cols-12 gap-10 items-end">
+          {/* Left: Editorial title block */}
+          <div className="lg:col-span-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-3 mb-6"
+            >
+              <span className="h-px w-10 bg-foreground/40" />
+              <span className="eyebrow">Portfolio · 2026</span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="font-display text-[clamp(3rem,9vw,7.5rem)] leading-[0.95] tracking-tight"
+            >
+              JV Paula <br />
+              <span className="italic text-accent">Villaflor</span>
+              <span className="text-foreground">.</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.35 }}
+              className="mt-8 max-w-xl text-base md:text-lg text-muted leading-relaxed"
+            >
+              Social Media Manager building cohesive, organic-first brand
+              presences for lifestyle and product brands — content planning,
+              visual branding, and the calm consistency that turns scrollers
+              into regulars.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+              className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4"
+            >
+              <Button asChild size="lg">
+                <a href="#contact">Start a project</a>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <a href="#experience">See recent work</a>
+              </Button>
+            </motion.div>
+          </div>
+
+          {/* Right: meta info column */}
+          <motion.aside
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="lg:col-span-4 space-y-8 lg:pl-6 lg:border-l lg:border-border"
+          >
+            <div>
+              <p className="eyebrow mb-3">Currently</p>
+              <p className="text-foreground text-lg leading-snug">
+                Open for new freelance and contract engagements through Q3 2026.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <p className="font-display text-4xl text-foreground">250K+</p>
+                <p className="text-xs text-muted mt-1 tracking-wide">
+                  Peak organic views on a single post
+                </p>
+              </div>
+              <div>
+                <p className="font-display text-4xl text-foreground">33K+</p>
+                <p className="text-xs text-muted mt-1 tracking-wide">
+                  Engagements without ad spend
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm text-muted">
+              <MapPin className="w-4 h-4" />
+              Cagayan de Oro · Open to remote
+            </div>
+          </motion.aside>
+        </div>
+
         <motion.div
-          className="absolute top-1/4 left-1/4 w-72 h-72 md:w-96 md:h-96 rounded-full bg-white/3 blur-3xl"
-          style={{ x: blob1X, y: blob1Y }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-72 h-72 md:w-96 md:h-96 rounded-full bg-white/4 blur-3xl"
-          style={{ x: blob2X, y: blob2Y }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-80 md:h-80 rounded-full bg-white/2 blur-3xl"
-          style={{ x: blob3X, y: blob3Y }}
-        />
-      </div>
-
-      {/* Grid lines decoration */}
-      <div className="absolute inset-0 -z-10 opacity-[0.03]">
-        <div className="absolute inset-0" style={{
-          backgroundImage: "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }} />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-muted font-medium text-sm md:text-base tracking-[0.3em] uppercase mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 1 }}
+          className="mt-20 flex items-center gap-3 text-xs uppercase tracking-[0.28em] text-muted"
         >
-          Social Media Manager
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight"
-        >
-          Your Brand&apos;s Social Media,{" "}
-          <span className="relative">
-            <span className="gradient-text">Elevated</span>
-            <motion.span
-              className="absolute -bottom-2 left-0 h-px bg-white/40"
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 0.8, delay: 1 }}
-            />
-          </span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-6 text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed"
-        >
-          Data-driven strategies that turn scrollers into followers, and
-          followers into loyal customers.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Button href="#contact" size="lg">
-            Let&apos;s Work Together
-          </Button>
-          <Button href="#case-studies" variant="outline" size="lg">
-            See My Work
-          </Button>
+          <ArrowDown className="w-4 h-4 animate-bounce" />
+          Scroll for the work
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-6 h-10 border border-white/20 rounded-full flex items-start justify-center p-1.5"
-        >
-          <motion.div className="w-1 h-1 rounded-full bg-white" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }

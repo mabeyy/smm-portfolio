@@ -1,113 +1,176 @@
-"use client";
-
 import { motion } from "framer-motion";
-import { Mail, MapPin, Instagram, Linkedin } from "lucide-react";
-import AnimatedSection from "@/components/UI/AnimatedSection";
-import SectionHeading from "@/components/UI/SectionHeading";
-import Button from "@/components/UI/Button";
+import { Mail, MapPin, Phone, Instagram } from "lucide-react";
+import AnimatedSection from "@/components/AnimatedSection";
+import SectionHeading from "@/components/SectionHeading";
+import { Button } from "@/components/ui/button";
 import { fadeInUp, slideInLeft, slideInRight } from "@/helpers/motion";
+
+const contactDetails = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "villaflorjvpaula@gmail.com",
+    href: "mailto:villaflorjvpaula@gmail.com",
+  },
+  {
+    icon: Phone,
+    label: "Phone",
+    value: "+63 997 356 9859",
+    href: "tel:+639973569859",
+  },
+  {
+    icon: MapPin,
+    label: "Based in",
+    value: "Cagayan de Oro, Philippines",
+    href: null,
+  },
+];
 
 export default function Contact() {
   return (
-    <AnimatedSection id="contact" className="py-20 md:py-32">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <AnimatedSection id="contact" className="py-24 md:py-36">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          title="Let's Work Together"
-          subtitle="Ready to elevate your brand's social media presence? I'd love to hear about your project."
+          eyebrow="Contact"
+          title="Let's make"
+          italicWord="something."
+          subtitle="Have a brand that needs a calmer, more cohesive feed? Send a quick note and I'll get back within a working day."
         />
 
-        <div className="grid md:grid-cols-2 gap-12 mt-8">
+        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
           {/* Left: Contact info */}
-          <motion.div variants={slideInLeft} className="space-y-6">
+          <motion.div variants={slideInLeft} className="lg:col-span-2 space-y-10">
             <div>
-              <h3 className="text-xl font-semibold mb-4">Get in Touch</h3>
-              <p className="text-muted leading-relaxed">
-                Whether you need a full social media strategy or help with a
-                specific campaign, I&apos;m here to help your brand grow.
-              </p>
+              <p className="eyebrow mb-3">Reach me directly</p>
+              <ul className="space-y-5">
+                {contactDetails.map((d) => {
+                  const Icon = d.icon;
+                  const inner = (
+                    <>
+                      <div className="w-10 h-10 rounded-full bg-paper border border-border flex items-center justify-center shrink-0 text-accent">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <p className="eyebrow mb-1">{d.label}</p>
+                        <p className="font-medium text-foreground">
+                          {d.value}
+                        </p>
+                      </div>
+                    </>
+                  );
+                  return (
+                    <motion.li
+                      key={d.label}
+                      variants={fadeInUp}
+                      className="flex items-start gap-4"
+                    >
+                      {d.href ? (
+                        <a
+                          href={d.href}
+                          className="flex items-start gap-4 hover:text-accent transition-colors"
+                        >
+                          {inner}
+                        </a>
+                      ) : (
+                        inner
+                      )}
+                    </motion.li>
+                  );
+                })}
+              </ul>
             </div>
 
-            <div className="space-y-4">
-              <motion.div
-                variants={fadeInUp}
-                className="flex items-center gap-3"
-              >
-                <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted">Email</p>
-                  <p className="font-medium">hello@jvvillaflor.com</p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                variants={fadeInUp}
-                className="flex items-center gap-3"
-              >
-                <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted">Location</p>
-                  <p className="font-medium">Available Worldwide (Remote)</p>
-                </div>
-              </motion.div>
-            </div>
-
             <div>
-              <p className="text-sm text-muted mb-3 font-medium">
-                Follow Me
-              </p>
-              <div className="flex gap-3">
+              <p className="eyebrow mb-3">Follow along</p>
+              <div className="flex gap-2">
                 <a
                   href="#"
-                  className="w-10 h-10 rounded-lg bg-card border border-border flex items-center justify-center text-muted hover:text-white hover:border-white/20 transition-all"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border-strong hover:bg-foreground hover:text-background transition-colors"
                   aria-label="Instagram"
                 >
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 rounded-lg bg-card border border-border flex items-center justify-center text-muted hover:text-white hover:border-white/20 transition-all"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="w-5 h-5" />
+                  <Instagram className="w-4 h-4" />
+                  <span className="text-sm">Instagram</span>
                 </a>
               </div>
             </div>
           </motion.div>
 
-          {/* Right: Contact form */}
-          <motion.div variants={slideInRight}>
+          {/* Right: Form */}
+          <motion.div variants={slideInRight} className="lg:col-span-3">
             <form
-              className="space-y-4"
+              className="bg-card border border-border rounded-3xl p-6 md:p-8 space-y-5"
               onSubmit={(e) => e.preventDefault()}
             >
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-xs text-muted uppercase tracking-[0.2em] mb-2"
+                  >
+                    Name
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    placeholder="Your name"
+                    className="w-full bg-background border border-border rounded-full px-5 py-3 text-foreground placeholder:text-muted/60 focus:outline-none focus:border-foreground/40 transition-colors"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-xs text-muted uppercase tracking-[0.2em] mb-2"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="you@brand.com"
+                    className="w-full bg-background border border-border rounded-full px-5 py-3 text-foreground placeholder:text-muted/60 focus:outline-none focus:border-foreground/40 transition-colors"
+                  />
+                </div>
+              </div>
               <div>
+                <label
+                  htmlFor="brand"
+                  className="block text-xs text-muted uppercase tracking-[0.2em] mb-2"
+                >
+                  Brand
+                </label>
                 <input
+                  id="brand"
                   type="text"
-                  placeholder="Your Name"
-                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-white placeholder:text-muted/50 focus:outline-none focus:border-white/30 transition-colors"
+                  placeholder="Brand name & link (optional)"
+                  className="w-full bg-background border border-border rounded-full px-5 py-3 text-foreground placeholder:text-muted/60 focus:outline-none focus:border-foreground/40 transition-colors"
                 />
               </div>
               <div>
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-white placeholder:text-muted/50 focus:outline-none focus:border-white/30 transition-colors"
-                />
-              </div>
-              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-xs text-muted uppercase tracking-[0.2em] mb-2"
+                >
+                  Project
+                </label>
                 <textarea
+                  id="message"
                   rows={5}
-                  placeholder="Tell me about your project..."
-                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-white placeholder:text-muted/50 focus:outline-none focus:border-white/30 transition-colors resize-none"
+                  placeholder="Tell me a little about the brand and what you're looking for…"
+                  className="w-full bg-background border border-border rounded-3xl px-5 py-4 text-foreground placeholder:text-muted/60 focus:outline-none focus:border-foreground/40 transition-colors resize-none"
                 />
               </div>
-              <Button type="submit" className="w-full">
-                Send Message
+              <Button type="submit" className="w-full" size="lg">
+                Send the note
               </Button>
+              <p className="text-xs text-muted text-center pt-1">
+                Or just email{" "}
+                <a
+                  href="mailto:villaflorjvpaula@gmail.com"
+                  className="underline underline-offset-4 hover:text-foreground"
+                >
+                  villaflorjvpaula@gmail.com
+                </a>
+              </p>
             </form>
           </motion.div>
         </div>

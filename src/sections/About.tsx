@@ -1,121 +1,103 @@
-"use client";
-
 import { motion } from "framer-motion";
-import { Instagram, Music, Facebook, Linkedin } from "lucide-react";
-import AnimatedSection from "@/components/UI/AnimatedSection";
-import Badge from "@/components/UI/Badge";
-import { fadeInUp, slideInLeft, slideInRight } from "@/helpers/motion";
+import { GraduationCap, Sparkles } from "lucide-react";
+import AnimatedSection from "@/components/AnimatedSection";
+import SectionHeading from "@/components/SectionHeading";
+import { Badge } from "@/components/ui/badge";
+import { slideInLeft, slideInRight } from "@/helpers/motion";
 import { aboutData } from "@/data/about";
-
-const platformIcons: Record<string, React.ReactNode> = {
-  Instagram: <Instagram className="w-4 h-4" />,
-  TikTok: <Music className="w-4 h-4" />,
-  Facebook: <Facebook className="w-4 h-4" />,
-  LinkedIn: <Linkedin className="w-4 h-4" />,
-};
 
 export default function About() {
   return (
-    <AnimatedSection id="about" className="py-20 md:py-32">
+    <AnimatedSection id="about" className="py-24 md:py-36">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: Profile Image */}
-          <motion.div variants={slideInLeft} className="flex justify-center">
-            <div className="relative group">
-              <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-card border border-border overflow-hidden flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
-                <div className="text-center text-muted">
-                  <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-white/5 flex items-center justify-center">
-                    <span className="text-3xl">📸</span>
+        <SectionHeading
+          eyebrow="About"
+          title="Quiet strategy."
+          italicWord="Loud results."
+        />
+
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left: Portrait / Mark */}
+          <motion.div variants={slideInLeft} className="lg:col-span-5">
+            <div className="relative">
+              <div className="aspect-[4/5] rounded-[2rem] bg-card border border-border overflow-hidden flex items-center justify-center">
+                <div className="text-center px-8">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-paper border border-border flex items-center justify-center">
+                    <Sparkles className="w-8 h-8 text-accent" />
                   </div>
-                  <p className="text-sm">Your Photo Here</p>
+                  <p className="font-display italic text-3xl text-foreground leading-tight">
+                    Add your portrait
+                  </p>
+                  <p className="text-xs text-muted mt-3 tracking-wide">
+                    Drop a photo into the placeholder
+                  </p>
                 </div>
               </div>
-              {/* Decorative rings */}
-              <div className="absolute -inset-3 rounded-full border border-white/10 -z-10 transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute -inset-6 rounded-full border border-white/5 -z-10 transition-transform duration-700 group-hover:scale-105" />
+              {/* corner mark */}
+              <div className="absolute -top-3 -left-3 px-3 py-1 rounded-full bg-foreground text-background text-[10px] tracking-[0.2em] uppercase">
+                JV · 26
+              </div>
+              <div className="absolute -bottom-3 -right-3 px-3 py-1 rounded-full bg-accent text-accent-foreground text-[10px] tracking-[0.2em] uppercase">
+                Open
+              </div>
             </div>
           </motion.div>
 
           {/* Right: Content */}
-          <motion.div variants={slideInRight} className="space-y-6">
+          <motion.div variants={slideInRight} className="lg:col-span-7 space-y-10">
             <div>
-              <p className="text-muted font-medium text-sm tracking-[0.3em] uppercase mb-2">
-                Hi, I&apos;m
-              </p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+              <p className="eyebrow mb-3">Hi, I&apos;m</p>
+              <h3 className="font-display text-4xl md:text-5xl tracking-tight">
                 {aboutData.name}
-              </h2>
-              <p className="text-xl md:text-2xl text-muted font-semibold mt-1">
-                {aboutData.title}
+              </h3>
+              <p className="mt-2 text-lg text-muted">
+                {aboutData.title} · {aboutData.location}
               </p>
             </div>
 
-            <p className="text-muted leading-relaxed">{aboutData.bio}</p>
-
-            <p className="text-lg font-medium italic text-white/80 border-l-2 border-white/20 pl-4">
-              &ldquo;{aboutData.valueStatement}&rdquo;
+            <p className="text-base md:text-lg leading-relaxed text-foreground/80">
+              {aboutData.bio}
             </p>
 
-            {/* Platforms */}
+            <blockquote className="font-display italic text-2xl md:text-3xl leading-snug border-l-2 border-accent pl-5 text-foreground">
+              &ldquo;{aboutData.valueStatement}&rdquo;
+            </blockquote>
+
+            {/* Short skills */}
             <div>
-              <p className="text-sm text-muted mb-2 font-medium">
-                Platforms I Specialize In
-              </p>
+              <p className="eyebrow mb-3">Short skills</p>
               <div className="flex flex-wrap gap-2">
-                {aboutData.platforms.map((platform) => (
-                  <Badge key={platform.name} variant="outline">
-                    {platformIcons[platform.name]}
-                    {platform.name}
+                {aboutData.shortSkills.map((skill) => (
+                  <Badge key={skill} variant="outline">
+                    {skill}
                   </Badge>
                 ))}
               </div>
             </div>
 
-            {/* Stats row */}
-            <div className="grid grid-cols-2 gap-4">
-              <motion.div
-                variants={fadeInUp}
-                className="bg-card border border-border rounded-xl p-4"
-              >
-                <p className="text-2xl font-bold text-white">
-                  {aboutData.experience}
-                </p>
-                <p className="text-sm text-muted">Experience</p>
-              </motion.div>
-              <motion.div
-                variants={fadeInUp}
-                className="bg-card border border-border rounded-xl p-4"
-              >
-                <p className="text-2xl font-bold text-white">
-                  {aboutData.industries.length}+
-                </p>
-                <p className="text-sm text-muted">Industries</p>
-              </motion.div>
-            </div>
-
-            {/* Strategy style */}
+            {/* Core competencies */}
             <div>
-              <p className="text-sm text-muted mb-2 font-medium">
-                My Approach
-              </p>
+              <p className="eyebrow mb-3">Core competencies</p>
               <div className="flex flex-wrap gap-2">
-                {aboutData.strategyStyle.map((style) => (
-                  <Badge key={style} variant="outline">
-                    {style}
-                  </Badge>
+                {aboutData.competencies.map((c) => (
+                  <Badge key={c}>{c}</Badge>
                 ))}
               </div>
             </div>
 
-            {/* Tools */}
-            <div>
-              <p className="text-sm text-muted mb-2 font-medium">
-                Tools I Use
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {aboutData.tools.map((tool) => (
-                  <Badge key={tool}>{tool}</Badge>
-                ))}
+            {/* Education */}
+            <div className="flex items-start gap-4 pt-4 border-t border-border">
+              <div className="w-10 h-10 rounded-full bg-paper border border-border flex items-center justify-center shrink-0">
+                <GraduationCap className="w-5 h-5 text-accent" />
+              </div>
+              <div>
+                <p className="eyebrow mb-1">Education</p>
+                <p className="font-medium text-foreground">
+                  {aboutData.education.degree}
+                </p>
+                <p className="text-sm text-muted">
+                  {aboutData.education.school} · {aboutData.education.period}
+                </p>
               </div>
             </div>
           </motion.div>

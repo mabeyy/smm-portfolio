@@ -1,5 +1,3 @@
-"use client";
-
 import { motion } from "framer-motion";
 import {
   Target,
@@ -9,46 +7,57 @@ import {
   BarChart3,
   Megaphone,
 } from "lucide-react";
-import AnimatedSection from "@/components/UI/AnimatedSection";
-import SectionHeading from "@/components/UI/SectionHeading";
-import Card from "@/components/UI/Card";
-import TiltCard from "@/components/UI/TiltCard";
+import AnimatedSection from "@/components/AnimatedSection";
+import SectionHeading from "@/components/SectionHeading";
 import { fadeInUp } from "@/helpers/motion";
 import { services } from "@/data/services";
 
 const iconMap: Record<string, React.ReactNode> = {
-  Target: <Target className="w-6 h-6 text-white" />,
-  CalendarDays: <CalendarDays className="w-6 h-6 text-white" />,
-  PenTool: <PenTool className="w-6 h-6 text-white" />,
-  Users: <Users className="w-6 h-6 text-white" />,
-  BarChart3: <BarChart3 className="w-6 h-6 text-white" />,
-  Megaphone: <Megaphone className="w-6 h-6 text-white" />,
+  Target: <Target className="w-5 h-5" />,
+  CalendarDays: <CalendarDays className="w-5 h-5" />,
+  PenTool: <PenTool className="w-5 h-5" />,
+  Users: <Users className="w-5 h-5" />,
+  BarChart3: <BarChart3 className="w-5 h-5" />,
+  Megaphone: <Megaphone className="w-5 h-5" />,
 };
 
 export default function Services() {
   return (
-    <AnimatedSection id="services" className="py-20 md:py-32">
+    <AnimatedSection
+      id="services"
+      className="py-24 md:py-36 bg-paper/60 border-y border-border"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          title="What I Do"
-          subtitle="Comprehensive social media services tailored to your brand's unique needs and goals."
+          eyebrow="Services"
+          title="How I help brands"
+          italicWord="grow."
+          subtitle="A focused offering for lifestyle, product, and service brands who want a consistent, organic-first social presence."
         />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <motion.div key={service.title} variants={fadeInUp}>
-              <TiltCard>
-                <Card className="h-full">
-                  <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4">
-                    {iconMap[service.icon]}
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{service.title}</h3>
-                  <p className="text-muted text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                </Card>
-              </TiltCard>
-            </motion.div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-3xl overflow-hidden border border-border">
+          {services.map((service, i) => (
+            <motion.article
+              key={service.title}
+              variants={fadeInUp}
+              className="group bg-card hover:bg-card-hover transition-colors duration-500 p-8 md:p-10 flex flex-col"
+            >
+              <div className="flex items-center justify-between mb-8">
+                <span className="font-mono text-xs text-muted">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="w-10 h-10 rounded-full bg-paper border border-border flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent transition-all duration-500">
+                  {iconMap[service.icon]}
+                </div>
+              </div>
+
+              <h3 className="font-display text-2xl md:text-3xl leading-tight tracking-tight mb-3">
+                {service.title}
+              </h3>
+              <p className="text-muted text-sm leading-relaxed">
+                {service.description}
+              </p>
+            </motion.article>
           ))}
         </div>
       </div>

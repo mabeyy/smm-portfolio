@@ -1,48 +1,44 @@
 export interface AboutData {
   name: string;
   title: string;
+  location: string;
   bio: string;
   valueStatement: string;
-  platforms: { name: string }[];
-  experience: string;
-  industries: string[];
-  strategyStyle: string[];
-  tools: string[];
+  shortSkills: string[];
+  competencies: string[];
+  education: {
+    degree: string;
+    school: string;
+    period: string;
+  };
 }
 
 export const aboutData: AboutData = {
   name: "JV Paula Villaflor",
   title: "Social Media Manager",
-  bio: "I help brands build meaningful connections with their audiences through strategic social media management. With a passion for storytelling and a data-driven approach, I transform social platforms into powerful growth engines.",
+  location: "Cagayan de Oro, Philippines",
+  bio: "Creative and detail-oriented social media manager. I plan, create, and schedule content that strengthens brand identity and keeps an online presence consistent — aligning visuals and captions with brand voice to lift engagement and visibility.",
   valueStatement:
-    "Turning scrollers into loyal followers, and followers into paying customers.",
-  platforms: [
-    { name: "Instagram" },
-    { name: "TikTok" },
-    { name: "Facebook" },
-    { name: "LinkedIn" },
+    "Turning quiet feeds into recognisable brands — one cohesive post at a time.",
+  shortSkills: [
+    "Content Planning",
+    "Visual Branding",
+    "Social Media Scheduling",
+    "Caption Writing",
+    "Trend-Based Content Strategy",
   ],
-  experience: "5+ years",
-  industries: [
-    "Food & Beverage",
-    "Fashion & Apparel",
-    "SaaS & Tech",
-    "Health & Wellness",
-    "E-commerce",
+  competencies: [
+    "Creative Thinking",
+    "Adaptability",
+    "Problem Solving",
+    "Communication",
+    "Leadership & Collaboration",
+    "Works Independently",
+    "Eagerness to Learn",
   ],
-  strategyStyle: [
-    "Data-Driven Growth",
-    "Brand Storytelling",
-    "Community-First Approach",
-    "Growth Hacking",
-  ],
-  tools: [
-    "Meta Business Suite",
-    "Hootsuite",
-    "Canva",
-    "Adobe Creative Suite",
-    "Google Analytics",
-    "Later",
-    "Sprout Social",
-  ],
+  education: {
+    degree: "Bachelor of Computer Science",
+    school: "University of Science and Technology of the Southern Philippines",
+    period: "2022 — Present",
+  },
 };

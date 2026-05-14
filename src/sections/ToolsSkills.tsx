@@ -1,71 +1,73 @@
-"use client";
-
 import { motion } from "framer-motion";
-import { Clock, BarChart, Palette, TrendingUp } from "lucide-react";
-import AnimatedSection from "@/components/UI/AnimatedSection";
-import SectionHeading from "@/components/UI/SectionHeading";
-import Card from "@/components/UI/Card";
-import Marquee from "@/components/UI/Marquee";
+import { Palette, Layers, Workflow } from "lucide-react";
+import AnimatedSection from "@/components/AnimatedSection";
+import SectionHeading from "@/components/SectionHeading";
+import Marquee from "@/components/Marquee";
 import { fadeInUp } from "@/helpers/motion";
-import { toolCategories } from "@/data/tools";
+import { toolGroups } from "@/data/tools";
 
 const iconMap: Record<string, React.ReactNode> = {
-  Clock: <Clock className="w-5 h-5 text-white" />,
-  BarChart: <BarChart className="w-5 h-5 text-white" />,
-  Palette: <Palette className="w-5 h-5 text-white" />,
-  TrendingUp: <TrendingUp className="w-5 h-5 text-white" />,
+  Palette: <Palette className="w-4 h-4" />,
+  Layers: <Layers className="w-4 h-4" />,
+  Workflow: <Workflow className="w-4 h-4" />,
 };
 
-const allTools = toolCategories.flatMap((cat) =>
-  cat.items.map((item) => item.name)
-);
+const marqueeItems = toolGroups.flatMap((g) => g.items);
 
 export default function ToolsSkills() {
   return (
-    <AnimatedSection id="tools" className="py-20 md:py-32">
+    <AnimatedSection
+      id="toolkit"
+      className="py-24 md:py-36 bg-paper/60 border-y border-border"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          title="Tools & Skills"
-          subtitle="The platforms and tools I use to deliver results for every project."
+          eyebrow="Toolkit"
+          title="The kit I work"
+          italicWord="with."
+          subtitle="Tools chosen because they make the work cleaner — not because they look impressive on a slide."
         />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {toolCategories.map((cat) => (
-            <motion.div key={cat.category} variants={fadeInUp}>
-              <Card className="h-full">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
-                    {iconMap[cat.icon]}
-                  </div>
-                  <h3 className="font-semibold">{cat.category}</h3>
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+          {toolGroups.map((group) => (
+            <motion.div
+              key={group.category}
+              variants={fadeInUp}
+              className="bg-card border border-border rounded-3xl p-7 md:p-8 flex flex-col"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-9 h-9 rounded-full bg-paper border border-border flex items-center justify-center text-accent">
+                  {iconMap[group.icon]}
                 </div>
-                <div className="space-y-4">
-                  {cat.items.map((item) => (
-                    <div key={item.name}>
-                      <div className="flex justify-between text-sm mb-1.5">
-                        <span className="text-muted">{item.name}</span>
-                        <span className="text-xs text-muted">{item.level}%</span>
-                      </div>
-                      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-                        <motion.div
-                          className="h-full rounded-full bg-white"
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${item.level}%` }}
-                          transition={{ duration: 1.2, ease: "easeOut" }}
-                          viewport={{ once: true }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Card>
+                <h3 className="text-sm uppercase tracking-[0.18em] text-muted">
+                  {group.category}
+                </h3>
+              </div>
+
+              <ul className="space-y-3 mt-2">
+                {group.items.map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-baseline justify-between gap-4 border-b border-border/60 pb-3 last:border-0 last:pb-0"
+                  >
+                    <span className="font-display italic text-2xl text-foreground leading-tight">
+                      {item}
+                    </span>
+                    <span className="font-mono text-xs text-muted">
+                      ✦
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Marquee */}
-      <Marquee items={allTools} className="mt-16 py-6 border-y border-border" />
+      <Marquee
+        items={marqueeItems}
+        className="mt-20 py-6 border-y border-border bg-background"
+      />
     </AnimatedSection>
   );
 }
