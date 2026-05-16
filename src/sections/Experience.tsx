@@ -21,7 +21,7 @@ export default function Experience() {
           {/* Vertical rule */}
           <span
             aria-hidden
-            className="hidden md:block absolute left-[120px] top-2 bottom-2 w-px bg-border"
+            className="hidden md:block absolute left-30 top-2 bottom-2 w-px bg-border"
           />
 
           <div className="space-y-16 md:space-y-20">
@@ -53,7 +53,9 @@ export default function Experience() {
                       <h3 className="font-display text-3xl md:text-5xl leading-[1.05] tracking-tight">
                         {exp.client}
                       </h3>
-                      <p className="text-muted-foreground mt-2 text-base">{exp.role}</p>
+                      <p className="text-muted-foreground mt-2 text-base">
+                        {exp.role} · {exp.location}
+                      </p>
                     </div>
                     <ArrowUpRight className="w-6 h-6 text-muted-foreground shrink-0" />
                   </div>

@@ -6,18 +6,25 @@ export interface ToolGroup {
 
 export const toolGroups: ToolGroup[] = [
   {
-    category: "Design & Prototyping",
+    category: "Content Creation & Design",
     icon: "Palette",
-    items: ["Canva", "CapCut", "Figma"],
+    items: [
+      "Canva",
+      "CapCut",
+      "Photo Editing",
+      "Product Photography",
+      "Video Editing",
+      "Graphic Design",
+    ],
   },
   {
-    category: "Platforms & Suites",
+    category: "Platforms",
     icon: "Layers",
-    items: ["Meta Business Suite", "Instagram", "TikTok", "Facebook"],
+    items: ["Instagram", "Facebook", "TikTok", "Meta Business Suite"],
   },
   {
     category: "Workflow & Productivity",
     icon: "Workflow",
-    items: ["Microsoft Office", "Google Drive", "Trello"],
+    items: ["Trello", "Microsoft Office", "Google Drive"],
   },
 ];

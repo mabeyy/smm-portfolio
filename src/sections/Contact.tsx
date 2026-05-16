@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mail, MapPin, Phone, Instagram } from "lucide-react";
+import { Mail, MapPin, Phone, Instagram, Linkedin } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionHeading from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { fadeInUp, slideInLeft, slideInRight } from "@/helpers/motion";
+import { aboutData } from "@/data/about";
 
 const contactDetails = [
   {
@@ -85,9 +86,21 @@ export default function Contact() {
 
             <div>
               <p className="eyebrow mb-3">Follow along</p>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <a
-                  href="#"
+                  href={aboutData.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border-strong hover:bg-foreground hover:text-background transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-4 h-4" />
+                  <span className="text-sm">LinkedIn</span>
+                </a>
+                <a
+                  href={aboutData.instagram}
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border-strong hover:bg-foreground hover:text-background transition-colors"
                   aria-label="Instagram"
                 >

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GraduationCap, Sparkles } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionHeading from "@/components/SectionHeading";
 import { Badge } from "@/components/ui/badge";
@@ -17,28 +17,23 @@ export default function About() {
         />
 
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left: Portrait / Mark */}
+          {/* Left: Portrait */}
           <motion.div variants={slideInLeft} className="lg:col-span-5">
             <div className="relative">
-              <div className="aspect-4/5 rounded-4xl bg-card border border-border overflow-hidden flex items-center justify-center">
-                <div className="text-center px-8">
-                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-paper border border-border flex items-center justify-center">
-                    <Sparkles className="w-8 h-8 text-brand" />
-                  </div>
-                  <p className="font-display italic text-3xl text-foreground leading-tight">
-                    Add your portrait
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-3 tracking-wide">
-                    Drop a photo into the placeholder
-                  </p>
-                </div>
+              <div className="aspect-4/5 rounded-4xl bg-card border border-border overflow-hidden">
+                <img
+                  src="/jv-paula.jpg"
+                  alt="JV Paula Villaflor"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
               </div>
-              {/* corner mark */}
+              {/* corner marks */}
               <div className="absolute -top-3 -left-3 px-3 py-1 rounded-full bg-foreground text-background text-[10px] tracking-[0.2em] uppercase">
                 JV · 26
               </div>
               <div className="absolute -bottom-3 -right-3 px-3 py-1 rounded-full bg-brand text-brand-foreground text-[10px] tracking-[0.2em] uppercase">
-                Open
+                Open to work
               </div>
             </div>
           </motion.div>
