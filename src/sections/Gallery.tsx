@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionHeading from "@/components/SectionHeading";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { cn } from "@/lib/utils";
 import { fadeInUp } from "@/helpers/motion";
 import {
   galleryCategories,
@@ -26,43 +26,68 @@ export default function Gallery() {
       : galleryItems.filter((item) => item.category === activeCategory);
 
   return (
-    <AnimatedSection id="gallery" className="py-24 md:py-36">
+    <AnimatedSection id="gallery" className="py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Selected work"
           title="Content"
           italicWord="gallery."
           subtitle="A sample of formats — posts, reels, captions, and carousels — across the brands I've supported. Filter by format below."
+          className="mb-8 md:mb-10"
         />
 
         {/* Filter */}
-        <motion.div variants={fadeInUp} className="mb-12">
-          <ToggleGroup
-            type="single"
-            value={activeCategory}
-            onValueChange={(v) => {
-              if (v) setActiveCategory(v as GalleryCategory);
-            }}
-            spacing={8}
-            className="flex-wrap"
-          >
-            {galleryCategories.map((cat) => (
-              <ToggleGroupItem
-                key={cat.value}
-                value={cat.value}
-                variant="outline"
-                className="rounded-full data-[state=on]:bg-foreground data-[state=on]:text-background data-[state=on]:border-foreground"
-              >
-                {cat.label}
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
+        <motion.div variants={fadeInUp} className="mb-8">
+          <div className="inline-flex flex-wrap items-center gap-1 rounded-full border border-border bg-paper/70 p-1">
+            {galleryCategories.map((cat) => {
+              const isActive = activeCategory === cat.value;
+              const count =
+                cat.value === "all"
+                  ? galleryItems.length
+                  : galleryItems.filter((i) => i.category === cat.value).length;
+              return (
+                <button
+                  key={cat.value}
+                  type="button"
+                  onClick={() => setActiveCategory(cat.value)}
+                  aria-pressed={isActive}
+                  className="relative rounded-full px-4 py-2 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="galleryFilterPill"
+                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                      className="absolute inset-0 rounded-full bg-brand shadow-[0_6px_18px_-8px] shadow-brand/60"
+                    />
+                  )}
+                  <span
+                    className={cn(
+                      "relative z-10 inline-flex items-center gap-2 transition-colors duration-200",
+                      isActive
+                        ? "text-brand-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {cat.label}
+                    <span
+                      className={cn(
+                        "font-mono text-[0.65rem] tabular-nums transition-colors duration-200",
+                        isActive ? "text-brand-foreground/60" : "text-muted-soft"
+                      )}
+                    >
+                      {String(count).padStart(2, "0")}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </motion.div>
 
         {/* Gallery grid */}
         <motion.div
           layout
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"
         >
           <AnimatePresence mode="popLayout">
             {filtered.map((item) => (
@@ -73,28 +98,28 @@ export default function Gallery() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
-                className="group relative aspect-4/5 rounded-2xl overflow-hidden border border-border"
+                className="group relative aspect-square rounded-2xl overflow-hidden border border-border"
               >
                 <div
                   className={`absolute inset-0 ${
                     toneStyles[item.tone] ?? toneStyles.warm
-                  } flex flex-col justify-between p-5`}
+                  } flex flex-col justify-between p-4`}
                 >
-                  <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.2em]">
+                  <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.16em] gap-1">
                     <span>{item.platform}</span>
                     <span>{item.category}</span>
                   </div>
-                  <div className="font-display italic text-2xl md:text-3xl leading-tight">
+                  <div className="font-display italic text-lg md:text-xl leading-tight">
                     {item.title}
                   </div>
                 </div>
 
-                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/90 transition-all duration-500 flex items-end p-5">
+                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/90 transition-all duration-500 flex items-end p-4">
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-                    <p className="font-display italic text-2xl text-background leading-tight">
+                    <p className="font-display italic text-lg text-background leading-tight">
                       {item.title}
                     </p>
-                    <p className="text-xs text-background/70 mt-2 leading-relaxed">
+                    <p className="text-[11px] text-background/70 mt-1.5 leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -104,7 +129,7 @@ export default function Gallery() {
           </AnimatePresence>
         </motion.div>
 
-        <p className="mt-10 text-sm text-muted-foreground">
+        <p className="mt-8 text-sm text-muted-foreground">
           Tiles are placeholders — replace with real exports from the campaigns
           you want to feature.
         </p>

@@ -72,33 +72,51 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:col-span-4 space-y-8 lg:pl-6 lg:border-l lg:border-border"
+            className="lg:col-span-4 lg:pl-8 lg:border-l lg:border-border"
           >
-            <div>
-              <p className="eyebrow mb-3">Currently</p>
-              <p className="text-foreground text-lg leading-snug">
-                Open for new freelance and contract engagements through Q3 2026.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <p className="font-display text-4xl text-foreground">250K+</p>
-                <p className="text-xs text-muted-foreground mt-1 tracking-wide">
-                  Peak organic views on a single post
+            <div className="divide-y divide-border">
+              {/* Availability */}
+              <div className="pb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand/60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
+                  </span>
+                  <span className="eyebrow">Currently</span>
+                </div>
+                <p className="text-foreground text-lg leading-snug">
+                  Open for new freelance and contract engagements through Q3
+                  2026.
                 </p>
               </div>
-              <div>
-                <p className="font-display text-4xl text-foreground">33K+</p>
-                <p className="text-xs text-muted-foreground mt-1 tracking-wide">
-                  Engagements without ad spend
-                </p>
-              </div>
-            </div>
 
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <MapPin className="w-4 h-4" />
-              Cagayan de Oro · Open to remote
+              {/* Proof points */}
+              <div className="grid grid-cols-2 gap-6 py-6">
+                <div>
+                  <span className="block w-8 h-px bg-brand mb-3" />
+                  <p className="font-display text-3xl text-foreground leading-none">
+                    Organic
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                    Growth built without ad spend
+                  </p>
+                </div>
+                <div>
+                  <span className="block w-8 h-px bg-brand mb-3" />
+                  <p className="font-display text-3xl text-foreground leading-none">
+                    End-to-end
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                    Strategy, content & calendars from scratch
+                  </p>
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="flex items-center gap-2 pt-6 text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4 text-brand" />
+                Cagayan de Oro · Open to remote
+              </div>
             </div>
           </motion.aside>
         </div>

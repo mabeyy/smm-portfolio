@@ -8,15 +8,16 @@ import { aboutData } from "@/data/about";
 
 export default function About() {
   return (
-    <AnimatedSection id="about" className="py-24 md:py-36">
+    <AnimatedSection id="about" className="py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="About"
-          title="Quiet strategy."
-          italicWord="Loud results."
+          title="Behind the"
+          italicWord="brand."
+          className="mb-8 md:mb-10"
         />
 
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 lg:items-center">
           {/* Left: Portrait */}
           <motion.div variants={slideInLeft} className="lg:col-span-5">
             <div className="relative">
@@ -28,10 +29,6 @@ export default function About() {
                   loading="lazy"
                 />
               </div>
-              {/* corner marks */}
-              <div className="absolute -top-3 -left-3 px-3 py-1 rounded-full bg-foreground text-background text-[10px] tracking-[0.2em] uppercase">
-                JV · 26
-              </div>
               <div className="absolute -bottom-3 -right-3 px-3 py-1 rounded-full bg-brand text-brand-foreground text-[10px] tracking-[0.2em] uppercase">
                 Open to work
               </div>
@@ -39,8 +36,9 @@ export default function About() {
           </motion.div>
 
           {/* Right: Content */}
-          <motion.div variants={slideInRight} className="lg:col-span-7 space-y-10">
-            <div>
+          <motion.div variants={slideInRight} className="lg:col-span-7 divide-y divide-border">
+            {/* Identity + bio */}
+            <div className="pb-7">
               <p className="eyebrow mb-3">Hi, I&apos;m</p>
               <h3 className="font-display text-4xl md:text-5xl tracking-tight">
                 {aboutData.name}
@@ -48,40 +46,30 @@ export default function About() {
               <p className="mt-2 text-lg text-muted-foreground">
                 {aboutData.title} · {aboutData.location}
               </p>
+              <p className="mt-5 text-base md:text-lg leading-relaxed text-foreground/80">
+                {aboutData.bio}
+              </p>
             </div>
 
-            <p className="text-base md:text-lg leading-relaxed text-foreground/80">
-              {aboutData.bio}
-            </p>
-
-            <blockquote className="font-display italic text-2xl md:text-3xl leading-snug border-l-2 border-brand pl-5 text-foreground">
-              &ldquo;{aboutData.valueStatement}&rdquo;
-            </blockquote>
-
-            {/* Short skills */}
-            <div>
-              <p className="eyebrow mb-3">Short skills</p>
-              <div className="flex flex-wrap gap-2">
+            {/* Skills */}
+            <div className="py-7">
+              <p className="eyebrow mb-3">Skills</p>
+              <div className="flex flex-wrap gap-2.5">
                 {aboutData.shortSkills.map((skill) => (
-                  <Badge key={skill} variant="outline">
+                  <Badge
+                    key={skill}
+                    variant="outline"
+                    className="text-sm pl-3 pr-3.5 py-1.5 gap-2 bg-card border-border-strong text-foreground/80 transition-colors duration-300 hover:border-brand hover:text-foreground"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-brand/70" />
                     {skill}
                   </Badge>
                 ))}
               </div>
             </div>
 
-            {/* Core competencies */}
-            <div>
-              <p className="eyebrow mb-3">Core competencies</p>
-              <div className="flex flex-wrap gap-2">
-                {aboutData.competencies.map((c) => (
-                  <Badge key={c}>{c}</Badge>
-                ))}
-              </div>
-            </div>
-
             {/* Education */}
-            <div className="flex items-start gap-4 pt-4 border-t border-border">
+            <div className="flex items-start gap-4 pt-7">
               <div className="w-10 h-10 rounded-full bg-paper border border-border flex items-center justify-center shrink-0">
                 <GraduationCap className="w-5 h-5 text-brand" />
               </div>

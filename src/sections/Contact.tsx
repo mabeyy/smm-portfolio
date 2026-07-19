@@ -32,13 +32,14 @@ const contactDetails = [
 
 export default function Contact() {
   return (
-    <AnimatedSection id="contact" className="py-24 md:py-36">
+    <AnimatedSection id="contact" className="py-12 md:py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Contact"
           title="Let's make"
           italicWord="something."
           subtitle="Have a brand that needs a calmer, more cohesive feed? Send a quick note and I'll get back within a working day."
+          className="mb-8 md:mb-10"
         />
 
         <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">

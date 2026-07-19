@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { fadeInUp } from "@/helpers/motion";
+import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
   eyebrow?: string;
@@ -7,6 +8,7 @@ interface SectionHeadingProps {
   italicWord?: string;
   subtitle?: string;
   align?: "left" | "center";
+  className?: string;
 }
 
 export default function SectionHeading({
@@ -15,13 +17,16 @@ export default function SectionHeading({
   italicWord,
   subtitle,
   align = "left",
+  className,
 }: SectionHeadingProps) {
   return (
     <motion.div
       variants={fadeInUp}
-      className={`mb-14 md:mb-20 max-w-3xl ${
-        align === "center" ? "mx-auto text-center" : ""
-      }`}
+      className={cn(
+        "mb-14 md:mb-20 max-w-3xl",
+        align === "center" && "mx-auto text-center",
+        className
+      )}
     >
       {eyebrow && (
         <div
