@@ -1,9 +1,9 @@
-export type GalleryCategory = "all" | "nailkada" | "kres" | "brewbox";
+export type GalleryCategory = "all" | "nailkada" | "kres" | "brewbox" | "personal";
 
 export interface GalleryItem {
   id: string;
   category: Exclude<GalleryCategory, "all">;
-  type: "Photo" | "Reel";
+  type: "Photo" | "Reel" | "Video";
   url: string;
   image: string;
   tone: string;
@@ -14,6 +14,7 @@ export const galleryCategories: { label: string; value: GalleryCategory }[] = [
   { label: "Nailkada", value: "nailkada" },
   { label: "Kres Co.", value: "kres" },
   { label: "The Brew Box", value: "brewbox" },
+  { label: "Personal", value: "personal" },
 ];
 
 export const galleryBrandLabels: Record<
@@ -23,11 +24,12 @@ export const galleryBrandLabels: Record<
   nailkada: "Nailkada",
   kres: "Kres Co.",
   brewbox: "The Brew Box",
+  personal: "Personal",
 };
 
 const tones = ["warm", "sage", "cream"];
 
-type Seed = { category: Exclude<GalleryCategory, "all">; type: "Photo" | "Reel"; url: string };
+type Seed = { category: Exclude<GalleryCategory, "all">; type: GalleryItem["type"]; url: string };
 
 const seeds: Seed[] = [
   // Nailkada — photos
@@ -85,10 +87,20 @@ const seeds: Seed[] = [
   { category: "brewbox", type: "Reel", url: "https://www.instagram.com/reel/DSNA8kQE943/" },
   { category: "brewbox", type: "Reel", url: "https://www.instagram.com/reel/DSE_P4VjaMJ/" },
   { category: "brewbox", type: "Reel", url: "https://www.instagram.com/reel/DRw2I6FisQM/" },
+
+  // Personal — reels
+  { category: "personal", type: "Reel", url: "https://www.instagram.com/reel/Ddyhgq6TnOs/" },
+  { category: "personal", type: "Reel", url: "https://www.instagram.com/reel/DcurwGrO-DD/" },
+  { category: "personal", type: "Reel", url: "https://www.instagram.com/reel/Db8MMmitXyk/" },
+  { category: "personal", type: "Reel", url: "https://www.instagram.com/reel/DX8uI7uz7KD/" },
+  // Personal — YouTube
+  { category: "personal", type: "Video", url: "https://www.youtube.com/watch?v=g5Uw92cMoZk" },
 ];
 
 const shortcode = (url: string) =>
-  url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/)?.[1] ?? "";
+  url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/)?.[1] ??
+  url.match(/youtube\.com\/watch\?v=([A-Za-z0-9_-]+)/)?.[1] ??
+  "";
 
 export const galleryItems: GalleryItem[] = seeds.map((s, i) => ({
   id: `${s.category}-${i}`,

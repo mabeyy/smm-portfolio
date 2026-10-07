@@ -20,6 +20,9 @@ const toneStyles: Record<string, string> = {
 
 const INITIAL_VISIBLE = 12;
 
+const platform = (url: string) =>
+  url.includes("youtube.com") ? "YouTube" : "Instagram";
+
 export default function Gallery() {
   const [activeCategory, setActiveCategory] =
     useState<GalleryCategory>("all");
@@ -45,7 +48,7 @@ export default function Gallery() {
           eyebrow="Selected work"
           title="Content"
           italicWord="gallery."
-          subtitle="Real posts and reels from the brands I've managed — all organic, no ad spend. Filter by brand, and tap any tile to open it on Instagram."
+          subtitle="Real posts and reels from the brands I've managed — all organic, no ad spend. Filter by brand, and tap any tile to open the original post."
           className="mb-8 md:mb-10"
         />
 
@@ -109,7 +112,7 @@ export default function Gallery() {
                 href={item.url}
                 target="_blank"
                 rel="noreferrer"
-                aria-label={`${galleryBrandLabels[item.category]} — ${item.type} on Instagram`}
+                aria-label={`${galleryBrandLabels[item.category]} — ${item.type} on ${platform(item.url)}`}
                 layout
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -133,7 +136,7 @@ export default function Gallery() {
                     {galleryBrandLabels[item.category]}
                   </span>
                   <span className="inline-flex items-center gap-1 shrink-0 drop-shadow-sm">
-                    {item.type === "Reel" ? (
+                    {item.type !== "Photo" ? (
                       <Play className="w-2.5 h-2.5 fill-current" />
                     ) : (
                       <ImageIcon className="w-2.5 h-2.5" />
@@ -145,7 +148,7 @@ export default function Gallery() {
                 {/* Hover overlay */}
                 <div className="absolute inset-0 flex items-end bg-foreground/0 p-4 transition-colors duration-400 group-hover:bg-foreground/85">
                   <span className="inline-flex items-center gap-1.5 text-sm text-background opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    View on Instagram
+                    View on {platform(item.url)}
                     <ArrowUpRight className="w-4 h-4" />
                   </span>
                 </div>
@@ -174,8 +177,8 @@ export default function Gallery() {
         )}
 
         <p className="mt-8 text-sm text-muted-foreground">
-          Every post is organic — no ad spend. Tap any tile to view it on
-          Instagram.
+          Every post is organic — no ad spend. Tap any tile to view the original
+          post.
         </p>
       </div>
     </AnimatedSection>
