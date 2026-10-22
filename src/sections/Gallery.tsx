@@ -1,6 +1,16 @@
 import { useState } from "react";
+import { Dialog } from "radix-ui";
 import { motion, AnimatePresence } from "framer-motion";
-import { Image as ImageIcon, Play, ArrowUpRight, ChevronDown } from "lucide-react";
+import {
+  Image as ImageIcon,
+  Play,
+  ArrowUpRight,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Maximize2,
+  X,
+} from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionHeading from "@/components/SectionHeading";
 import { cn } from "@/lib/utils";
@@ -27,6 +37,7 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] =
     useState<GalleryCategory>("all");
   const [expanded, setExpanded] = useState(false);
+  const [openPhoto, setOpenPhoto] = useState<number | null>(null);
 
   const filtered =
     activeCategory === "all"
@@ -35,6 +46,13 @@ export default function Gallery() {
 
   const visible = expanded ? filtered : filtered.slice(0, INITIAL_VISIBLE);
   const hiddenCount = filtered.length - INITIAL_VISIBLE;
+  const photos = visible.filter((item) => item.type === "Photo");
+  const activePhoto = openPhoto === null ? null : photos[openPhoto];
+
+  const stepPhoto = (dir: 1 | -1) =>
+    setOpenPhoto((i) =>
+      i === null ? i : (i + dir + photos.length) % photos.length
+    );
 
   const selectCategory = (value: GalleryCategory) => {
     setActiveCategory(value);
@@ -106,54 +124,85 @@ export default function Gallery() {
           className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"
         >
           <AnimatePresence mode="popLayout">
-            {visible.map((item) => (
-              <motion.a
-                key={item.id}
-                href={item.url}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${galleryBrandLabels[item.category]} — ${item.type} on ${platform(item.url)}`}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                className="group relative block aspect-square rounded-2xl overflow-hidden border border-border outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
-              >
-                {/* Real thumbnail */}
-                <img
-                  src={item.image}
-                  alt={`${galleryBrandLabels[item.category]} — ${item.type}`}
-                  loading="lazy"
-                  className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04] ${
-                    toneStyles[item.tone] ?? toneStyles.warm
-                  }`}
-                />
+            {visible.map((item) => {
+              const isPhoto = item.type === "Photo";
+              const motionProps = {
+                layout: true,
+                initial: { opacity: 0, scale: 0.95 },
+                animate: { opacity: 1, scale: 1 },
+                exit: { opacity: 0, scale: 0.95 },
+                transition: { duration: 0.3 },
+                className:
+                  "group relative block aspect-square w-full rounded-2xl overflow-hidden border border-border outline-none focus-visible:ring-2 focus-visible:ring-brand/50",
+              } as const;
+              const tile = (
+                <>
+                  {/* Real thumbnail */}
+                  <img
+                    src={item.image}
+                    alt={`${galleryBrandLabels[item.category]} — ${item.type}`}
+                    loading="lazy"
+                    className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04] ${
+                      toneStyles[item.tone] ?? toneStyles.warm
+                    }`}
+                  />
 
-                {/* Top labels */}
-                <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-1 p-3 text-[9px] font-medium uppercase tracking-[0.16em] text-white bg-gradient-to-b from-black/45 to-transparent">
-                  <span className="truncate drop-shadow-sm">
-                    {galleryBrandLabels[item.category]}
-                  </span>
-                  <span className="inline-flex items-center gap-1 shrink-0 drop-shadow-sm">
-                    {item.type !== "Photo" ? (
-                      <Play className="w-2.5 h-2.5 fill-current" />
-                    ) : (
-                      <ImageIcon className="w-2.5 h-2.5" />
-                    )}
-                    {item.type}
-                  </span>
-                </div>
+                  {/* Top labels */}
+                  <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-1 p-3 text-[9px] font-medium uppercase tracking-[0.16em] text-white bg-gradient-to-b from-black/45 to-transparent">
+                    <span className="truncate drop-shadow-sm">
+                      {galleryBrandLabels[item.category]}
+                    </span>
+                    <span className="inline-flex items-center gap-1 shrink-0 drop-shadow-sm">
+                      {item.type !== "Photo" ? (
+                        <Play className="w-2.5 h-2.5 fill-current" />
+                      ) : (
+                        <ImageIcon className="w-2.5 h-2.5" />
+                      )}
+                      {item.type}
+                    </span>
+                  </div>
 
-                {/* Hover overlay */}
-                <div className="absolute inset-0 flex items-end bg-foreground/0 p-4 transition-colors duration-400 group-hover:bg-foreground/85">
-                  <span className="inline-flex items-center gap-1.5 text-sm text-background opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    View on {platform(item.url)}
-                    <ArrowUpRight className="w-4 h-4" />
-                  </span>
-                </div>
-              </motion.a>
-            ))}
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 flex items-end bg-foreground/0 p-4 transition-colors duration-400 group-hover:bg-foreground/85">
+                    <span className="inline-flex items-center gap-1.5 text-sm text-background opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      {isPhoto ? (
+                        <>
+                          View photo
+                          <Maximize2 className="w-3.5 h-3.5" />
+                        </>
+                      ) : (
+                        <>
+                          View on {platform(item.url)}
+                          <ArrowUpRight className="w-4 h-4" />
+                        </>
+                      )}
+                    </span>
+                  </div>
+                </>
+              );
+              return isPhoto ? (
+                <motion.button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setOpenPhoto(photos.indexOf(item))}
+                  aria-label={`${galleryBrandLabels[item.category]} — open photo`}
+                  {...motionProps}
+                >
+                  {tile}
+                </motion.button>
+              ) : (
+                <motion.a
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${galleryBrandLabels[item.category]} — ${item.type} on ${platform(item.url)}`}
+                  {...motionProps}
+                >
+                  {tile}
+                </motion.a>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
 
@@ -177,9 +226,72 @@ export default function Gallery() {
         )}
 
         <p className="mt-8 text-sm text-muted-foreground">
-          Every post is organic — no ad spend. Tap any tile to view the original
-          post.
+          Every post is organic — no ad spend. Tap a photo to view it, or a reel
+          to watch the original.
         </p>
+
+        <Dialog.Root
+          open={activePhoto !== null}
+          onOpenChange={(open) => !open && setOpenPhoto(null)}
+        >
+          <Dialog.Portal>
+            <Dialog.Overlay className="fixed inset-0 z-50 bg-foreground/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0" />
+            <Dialog.Content
+              onKeyDown={(e) => {
+                if (e.key === "ArrowRight") stepPhoto(1);
+                if (e.key === "ArrowLeft") stepPhoto(-1);
+              }}
+              className="fixed left-1/2 top-1/2 z-50 w-[min(92vw,34rem)] -translate-x-1/2 -translate-y-1/2 outline-none data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
+            >
+              {activePhoto && (
+                <figure className="overflow-hidden rounded-2xl bg-card shadow-2xl">
+                  <img
+                    src={activePhoto.image}
+                    alt={`${galleryBrandLabels[activePhoto.category]} — photo`}
+                    className="block max-h-[78vh] w-full bg-paper object-contain"
+                  />
+                  <figcaption className="flex items-center justify-between gap-3 px-4 py-3">
+                    <Dialog.Title className="text-sm font-medium">
+                      {galleryBrandLabels[activePhoto.category]}
+                    </Dialog.Title>
+                    <Dialog.Description className="font-mono text-xs tabular-nums text-muted-foreground">
+                      {String(openPhoto! + 1).padStart(2, "0")} /{" "}
+                      {String(photos.length).padStart(2, "0")}
+                    </Dialog.Description>
+                  </figcaption>
+                </figure>
+              )}
+
+              {photos.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => stepPhoto(-1)}
+                    aria-label="Previous photo"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-card/90 p-2 text-foreground shadow-md outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-brand/50 sm:-left-14"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => stepPhoto(1)}
+                    aria-label="Next photo"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-card/90 p-2 text-foreground shadow-md outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-brand/50 sm:-right-14"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </>
+              )}
+
+              <Dialog.Close
+                aria-label="Close"
+                className="absolute -top-12 right-0 rounded-full bg-card/90 p-2 text-foreground shadow-md outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-brand/50"
+              >
+                <X className="h-5 w-5" />
+              </Dialog.Close>
+            </Dialog.Content>
+          </Dialog.Portal>
+        </Dialog.Root>
       </div>
     </AnimatedSection>
   );
