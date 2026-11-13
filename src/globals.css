@@ -21,11 +21,11 @@
   --destructive-foreground: #ffffff;
   --border: #e8e2d6;
   --input: #e8e2d6;
-  --ring: #6b7a5e;
+  --ring: #4b382a;
   --radius: 0.75rem;
 
   /* project custom tokens */
-  --brand: #6b7a5e;
+  --brand: #4b382a;
   --brand-foreground: #ffffff;
   --brand-hover: #59674e;
   --paper: #f3eee5;
