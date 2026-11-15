@@ -1,13 +1,11 @@
 export interface ToolGroup {
   category: string;
-  icon: string;
   items: string[];
 }
 
 export const toolGroups: ToolGroup[] = [
   {
-    category: "Content Creation & Design",
-    icon: "Palette",
+    category: "Design & Production",
     items: [
       "Canva",
       "CapCut",
@@ -19,12 +17,10 @@ export const toolGroups: ToolGroup[] = [
   },
   {
     category: "Platforms",
-    icon: "Layers",
     items: ["Instagram", "Facebook", "TikTok", "Meta Business Suite"],
   },
   {
     category: "Workflow & Productivity",
-    icon: "Workflow",
     items: ["Trello", "Microsoft Office", "Google Drive"],
   },
 ];

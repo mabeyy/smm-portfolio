@@ -1,8 +1,5 @@
 import { motion } from "framer-motion";
 import {
-  Palette,
-  Layers,
-  Workflow,
   LayoutTemplate,
   Scissors,
   Wand2,
@@ -19,16 +16,8 @@ import {
   SiGoogledrive,
   SiMeta,
 } from "react-icons/si";
-import AnimatedSection from "@/components/AnimatedSection";
-import SectionHeading from "@/components/SectionHeading";
-import { fadeInUp, staggerContainer } from "@/helpers/motion";
 import { toolGroups } from "@/data/tools";
-
-const iconMap: Record<string, React.ReactNode> = {
-  Palette: <Palette className="w-4 h-4" />,
-  Layers: <Layers className="w-4 h-4" />,
-  Workflow: <Workflow className="w-4 h-4" />,
-};
+import SectionLabel from "@/components/SectionLabel";
 
 const toolIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   Canva: LayoutTemplate,
@@ -46,78 +35,74 @@ const toolIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   "Google Drive": SiGoogledrive,
 };
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 export default function ToolsSkills() {
   return (
-    <AnimatedSection
-      id="toolkit"
-      className="py-12 md:py-16 bg-paper/60 border-y border-border"
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          eyebrow="Toolkit"
-          title="The kit I work"
-          italicWord="with."
-          subtitle="Tools chosen because they make the work cleaner — not because they look impressive on a slide."
-          className="mb-8 md:mb-10"
-        />
+    <section id="toolkit" className="relative py-12 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-10 lg:gap-8">
+        {/* heading */}
+        <div className="lg:col-span-4">
+          <SectionLabel id="toolkit" />
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.05, ease }}
+            className="mt-5 font-display text-[clamp(2.75rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.02em]"
+          >
+            The kit I work <span className="italic text-brand">with.</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.15, ease }}
+            className="mt-5 max-w-sm text-base leading-relaxed text-muted-foreground"
+          >
+            Tools chosen because they make the work cleaner — not because they
+            look impressive on a slide.
+          </motion.p>
+        </div>
 
-        <motion.div
-          variants={fadeInUp}
-          className="rounded-3xl border border-border bg-card/50 overflow-hidden divide-y divide-border"
-        >
-          {toolGroups.map((group, i) => (
-            <div
+        {/* groups as rows */}
+        <div className="lg:col-span-8 border-t border-border-strong">
+          {toolGroups.map((group, gi) => (
+            <motion.div
               key={group.category}
-              className="group/row relative grid md:grid-cols-[minmax(0,0.85fr)_minmax(0,2fr)] gap-3 md:gap-12 px-6 py-4 md:px-8 md:py-5 transition-colors duration-500 hover:bg-card"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: gi * 0.08, ease }}
+              className="grid md:grid-cols-[11rem_minmax(0,1fr)] gap-x-8 gap-y-3.5 md:gap-y-4 border-b border-border-strong py-5 md:py-8"
             >
-              {/* Left — index, label, count */}
-              <div className="flex items-center gap-4 md:self-center">
-                <span className="font-display italic text-3xl md:text-4xl leading-none text-brand/25 transition-colors duration-500 group-hover/row:text-brand/60 select-none">
-                  {String(i + 1).padStart(2, "0")}
+              <h3 className="flex items-baseline gap-3 md:flex-col md:gap-1.5 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+                {group.category}
+                <span className="tabular-nums text-muted-soft">
+                  {String(group.items.length).padStart(2, "0")}
                 </span>
-                <div className="w-8 h-8 shrink-0 rounded-full bg-paper border border-border flex items-center justify-center text-brand">
-                  {iconMap[group.icon]}
-                </div>
-                <div className="min-w-0">
-                  <h3 className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground leading-snug">
-                    {group.category}
-                  </h3>
-                  <span className="font-mono text-[0.65rem] text-muted-soft">
-                    {String(group.items.length).padStart(2, "0")} tools
-                  </span>
-                </div>
-              </div>
-
-              {/* Right — tools as tactile editorial chips */}
-              <motion.ul
-                variants={staggerContainer}
-                className="flex flex-wrap items-center gap-2 md:self-center"
-              >
+              </h3>
+              <ul className="grid grid-cols-2 gap-x-4 gap-y-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-3">
                 {group.items.map((item) => {
                   const Icon = toolIcons[item];
                   return (
-                    <motion.li
-                      key={item}
-                      variants={fadeInUp}
-                      className="group/tool"
-                    >
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card pl-2 pr-3 py-1 cursor-default transition-all duration-300 group-hover/tool:border-brand group-hover/tool:bg-brand group-hover/tool:-translate-y-0.5 group-hover/tool:shadow-[0_6px_20px_-8px] group-hover/tool:shadow-brand/50">
+                    <li key={item}>
+                      <span className="group flex min-w-0 items-center gap-2 cursor-default">
                         {Icon && (
-                          <Icon className="w-3 h-3 shrink-0 text-brand transition-colors duration-300 group-hover/tool:text-brand-foreground" />
+                          <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 text-muted-soft transition-colors duration-300 group-hover:text-brand" />
                         )}
-                        <span className="h-2.5 w-px bg-border transition-colors duration-300 group-hover/tool:bg-brand-foreground/25" />
-                        <span className="font-display italic text-base md:text-lg leading-none text-foreground transition-colors duration-300 group-hover/tool:text-brand-foreground">
+                        <span className="truncate font-display text-lg sm:text-xl md:text-2xl leading-tight text-foreground transition-colors duration-300 group-hover:italic group-hover:text-brand">
                           {item}
                         </span>
                       </span>
-                    </motion.li>
+                    </li>
                   );
                 })}
-              </motion.ul>
-            </div>
+              </ul>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
-    </AnimatedSection>
+    </section>
   );
 }

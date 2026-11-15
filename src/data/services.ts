@@ -1,34 +1,27 @@
 export interface Service {
-  icon: string;
   title: string;
   description: string;
 }
 
 export const services: Service[] = [
   {
-    icon: "Target",
-    title: "Social Media Strategy",
-    description: "A clear plan mapped to your brand, audience, and goals.",
+    title: "Art Direction & Identity",
+    description: "Moodboards, palettes, and visual systems that make a brand unmistakable.",
   },
   {
-    icon: "CalendarDays",
-    title: "Content Planning & Calendar",
-    description:
-      "Organised calendars that keep posting consistent across platforms.",
+    title: "Graphic Design",
+    description: "Posters, layouts, and campaign graphics with an editorial eye.",
   },
   {
-    icon: "PenTool",
-    title: "Post Design & Copywriting",
-    description: "On-brand visuals and captions written to earn engagement.",
+    title: "Photography",
+    description: "Product and lifestyle shoots — styled, lit, and edited in-house.",
   },
   {
-    icon: "Users",
-    title: "Community Management",
-    description: "Replying, moderating, and building a loyal audience.",
+    title: "Video & Motion",
+    description: "Short-form films and reels, cut with rhythm and intention.",
   },
   {
-    icon: "BarChart3",
-    title: "Analytics & Reporting",
-    description: "Monthly reports with clear insights and next steps.",
+    title: "Creative Strategy",
+    description: "Concepts and content plans that give every piece a reason to exist.",
   },
 ];

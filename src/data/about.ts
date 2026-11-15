@@ -15,15 +15,16 @@ export interface AboutData {
 
 export const aboutData: AboutData = {
   name: "JV Paula Villaflor",
-  title: "Social Media Manager",
+  title: "Multidisciplinary Creative",
   location: "Cagayan de Oro City, Misamis Oriental",
-  bio: "Creative, detail-oriented social media manager. I handle content planning, visual branding, and scheduling — keeping a brand's presence consistent, cohesive, and easy to follow.",
+  bio: "Multidisciplinary creative working across graphic design, photography, and short-form video. I shape how brands look, sound, and move — from the first moodboard to the final frame.",
   shortSkills: [
-    "Content Planning",
+    "Art Direction",
+    "Graphic Design",
+    "Product Photography",
+    "Video Editing",
     "Visual Branding",
-    "Social Media Scheduling",
-    "Caption Writing",
-    "Trend-Based Content Strategy",
+    "Content Strategy",
   ],
   education: {
     degree: "Bachelor of Science in Computer Science",
