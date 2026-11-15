@@ -1,43 +1,28 @@
-import { useState } from "react";
-import { Dialog } from "radix-ui";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Image as ImageIcon,
-  Play,
-  ArrowUpRight,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Maximize2,
-  X,
-} from "lucide-react";
-import AnimatedSection from "@/components/AnimatedSection";
-import SectionHeading from "@/components/SectionHeading";
+import { Play, ArrowUpRight, Plus, Minus, ChevronRight } from "lucide-react";
+import WorkSheet from "@/components/WorkSheet";
 import { cn } from "@/lib/utils";
-import { fadeInUp } from "@/helpers/motion";
 import {
   galleryCategories,
   galleryItems,
   galleryBrandLabels,
   type GalleryCategory,
 } from "@/data/gallery";
+import { isProjectId } from "@/data/projects";
+import SectionLabel from "@/components/SectionLabel";
 
-const toneStyles: Record<string, string> = {
-  warm: "bg-[#efe4d3] text-[#5a432f]",
-  sage: "bg-[#dde2d3] text-[#3f4a35]",
-  cream: "bg-[#f1eadb] text-[#5e4f38]",
-};
+const ease = [0.22, 1, 0.36, 1] as const;
 
-const INITIAL_VISIBLE = 12;
+const INITIAL_VISIBLE = 8;
 
 const platform = (url: string) =>
   url.includes("youtube.com") ? "YouTube" : "Instagram";
 
 export default function Gallery() {
-  const [activeCategory, setActiveCategory] =
-    useState<GalleryCategory>("all");
+  const [activeCategory, setActiveCategory] = useState<GalleryCategory>("all");
   const [expanded, setExpanded] = useState(false);
-  const [openPhoto, setOpenPhoto] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const filtered =
     activeCategory === "all"
@@ -45,14 +30,53 @@ export default function Gallery() {
       : galleryItems.filter((item) => item.category === activeCategory);
 
   const visible = expanded ? filtered : filtered.slice(0, INITIAL_VISIBLE);
+  // photos that open in the detail view, in grid order
+  const pieces = filtered.filter((item) => item.type === "Photo" && isProjectId(item.category));
   const hiddenCount = filtered.length - INITIAL_VISIBLE;
-  const photos = visible.filter((item) => item.type === "Photo");
-  const activePhoto = openPhoto === null ? null : photos[openPhoto];
 
-  const stepPhoto = (dir: 1 | -1) =>
-    setOpenPhoto((i) =>
-      i === null ? i : (i + dir + photos.length) % photos.length
+  // horizontal scroll hints for the filter row on small screens
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ start: true, end: true });
+  const nudged = useRef(false);
+
+  useEffect(() => {
+    const el = tabsRef.current;
+    if (!el) return;
+    const update = () =>
+      setEdges({
+        start: el.scrollLeft <= 4,
+        end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4,
+      });
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+
+    // a small nudge the first time the row is seen, if it overflows
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || nudged.current || el.scrollWidth <= el.clientWidth) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        nudged.current = true;
+        el.scrollTo({ left: 48, behavior: "smooth" });
+        setTimeout(() => el.scrollTo({ left: 0, behavior: "smooth" }), 600);
+      },
+      { threshold: 1 }
     );
+    observer.observe(el);
+    return () => {
+      el.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      observer.disconnect();
+    };
+  }, []);
+
+  const scrollTabs = () =>
+    tabsRef.current?.scrollBy({ left: tabsRef.current.clientWidth * 0.6, behavior: "smooth" });
+
+  const fadeMask =
+    edges.start && edges.end
+      ? undefined
+      : `linear-gradient(to right, ${edges.start ? "black" : "transparent"}, black 12%, black 82%, ${edges.end ? "black" : "transparent"})`;
 
   const selectCategory = (value: GalleryCategory) => {
     setActiveCategory(value);
@@ -60,132 +84,144 @@ export default function Gallery() {
   };
 
   return (
-    <AnimatedSection id="gallery" className="py-12 md:py-16">
+    <section id="gallery" className="relative py-12 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          eyebrow="Selected work"
-          title="Content"
-          italicWord="gallery."
-          subtitle="Real posts and reels from the brands I've managed — all organic, no ad spend. Filter by brand, and tap any tile to open the original post."
-          className="mb-8 md:mb-10"
-        />
-
-        {/* Filter */}
-        <motion.div variants={fadeInUp} className="mb-8">
-          <div className="inline-flex flex-wrap items-center gap-1 rounded-full border border-border bg-paper/70 p-1">
-            {galleryCategories.map((cat) => {
-              const isActive = activeCategory === cat.value;
-              const count =
-                cat.value === "all"
-                  ? galleryItems.length
-                  : galleryItems.filter((i) => i.category === cat.value).length;
-              return (
-                <button
-                  key={cat.value}
-                  type="button"
-                  onClick={() => selectCategory(cat.value)}
-                  aria-pressed={isActive}
-                  className="relative rounded-full px-4 py-2 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="galleryFilterPill"
-                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                      className="absolute inset-0 rounded-full bg-brand shadow-[0_6px_18px_-8px] shadow-brand/60"
-                    />
-                  )}
-                  <span
-                    className={cn(
-                      "relative z-10 inline-flex items-center gap-2 transition-colors duration-200",
-                      isActive
-                        ? "text-brand-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {cat.label}
-                    <span
-                      className={cn(
-                        "font-mono text-[0.65rem] tabular-nums transition-colors duration-200",
-                        isActive ? "text-brand-foreground/60" : "text-muted-soft"
-                      )}
-                    >
-                      {String(count).padStart(2, "0")}
-                    </span>
-                  </span>
-                </button>
-              );
-            })}
+        {/* heading */}
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-end">
+          <div className="lg:col-span-6">
+            <SectionLabel id="gallery" />
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.05, ease }}
+              className="mt-5 font-display text-[clamp(2.75rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.02em]"
+            >
+              Selected <span className="italic text-brand">work.</span>
+            </motion.h2>
           </div>
-        </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.15, ease }}
+            className="lg:col-span-5 lg:col-start-8 text-base leading-relaxed text-muted-foreground"
+          >
+            Photography, design, and short-form video — made for brands and for
+            myself. Tap a photo to see it up close, or a reel to watch it.
+          </motion.p>
+        </div>
 
-        {/* Gallery grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"
+        {/* filter */}
+        <div className="relative mt-10 md:mt-12 -mx-4 sm:mx-0 border-b border-border-strong">
+        <div
+          ref={tabsRef}
+          role="tablist"
+          aria-label="Filter work"
+          style={fadeMask ? { maskImage: fadeMask, WebkitMaskImage: fadeMask } : undefined}
+          className="px-4 sm:px-0 flex items-end gap-x-7 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
+          {galleryCategories.map((cat) => {
+            const isActive = activeCategory === cat.value;
+            const count =
+              cat.value === "all"
+                ? galleryItems.length
+                : galleryItems.filter((i) => i.category === cat.value).length;
+            return (
+              <button
+                key={cat.value}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => selectCategory(cat.value)}
+                className={cn(
+                  "relative shrink-0 pb-3 font-display text-xl md:text-2xl outline-none transition-colors duration-300",
+                  isActive ? "italic text-foreground" : "text-muted-soft hover:text-muted-foreground"
+                )}
+              >
+                {cat.label}
+                <sup className="ml-1 font-mono text-[10px] not-italic tabular-nums text-muted-soft">
+                  {String(count).padStart(2, "0")}
+                </sup>
+                {isActive && (
+                  <motion.span
+                    layoutId="galleryTab"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                    className="absolute inset-x-0 -bottom-px h-px bg-foreground"
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        <AnimatePresence>
+          {!edges.end && (
+            <motion.button
+              type="button"
+              onClick={scrollTabs}
+              aria-label="More filters"
+              initial={{ opacity: 0, x: -4 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0 }}
+              className="absolute right-2 sm:right-0 top-1/2 -translate-y-[60%] grid place-items-center h-8 w-8 text-foreground"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </motion.button>
+          )}
+        </AnimatePresence>
+        </div>
+
+        {/* grid */}
+        <motion.div layout className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
           <AnimatePresence mode="popLayout">
             {visible.map((item) => {
-              const isPhoto = item.type === "Photo";
+              const opensPiece = item.type === "Photo" && isProjectId(item.category);
+              const isVideo = item.type !== "Photo";
               const motionProps = {
                 layout: true,
-                initial: { opacity: 0, scale: 0.95 },
-                animate: { opacity: 1, scale: 1 },
-                exit: { opacity: 0, scale: 0.95 },
-                transition: { duration: 0.3 },
+                initial: { opacity: 0, y: 16 },
+                animate: { opacity: 1, y: 0 },
+                exit: { opacity: 0, scale: 0.96 },
+                transition: { duration: 0.4, ease },
                 className:
-                  "group relative block aspect-square w-full rounded-2xl overflow-hidden border border-border outline-none focus-visible:ring-2 focus-visible:ring-brand/50",
+                  "group relative block aspect-[4/5] w-full overflow-hidden rounded-xl bg-paper outline-none focus-visible:ring-2 focus-visible:ring-brand/50",
               } as const;
               const tile = (
                 <>
-                  {/* Real thumbnail */}
                   <img
                     src={item.image}
                     alt={`${galleryBrandLabels[item.category]} — ${item.type}`}
                     loading="lazy"
-                    className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04] ${
-                      toneStyles[item.tone] ?? toneStyles.warm
-                    }`}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
                   />
 
-                  {/* Top labels */}
-                  <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-1 p-3 text-[9px] font-medium uppercase tracking-[0.16em] text-white bg-gradient-to-b from-black/45 to-transparent">
-                    <span className="truncate drop-shadow-sm">
-                      {galleryBrandLabels[item.category]}
+                  {isVideo && (
+                    <span className="absolute right-3 top-3 grid place-items-center h-8 w-8 rounded-full bg-background/90 text-foreground backdrop-blur">
+                      <Play className="w-3.5 h-3.5 fill-current" />
                     </span>
-                    <span className="inline-flex items-center gap-1 shrink-0 drop-shadow-sm">
-                      {item.type !== "Photo" ? (
-                        <Play className="w-2.5 h-2.5 fill-current" />
-                      ) : (
-                        <ImageIcon className="w-2.5 h-2.5" />
-                      )}
-                      {item.type}
-                    </span>
-                  </div>
+                  )}
 
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 flex items-end bg-foreground/0 p-4 transition-colors duration-400 group-hover:bg-foreground/85">
-                    <span className="inline-flex items-center gap-1.5 text-sm text-background opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      {isPhoto ? (
-                        <>
-                          View photo
-                          <Maximize2 className="w-3.5 h-3.5" />
-                        </>
-                      ) : (
-                        <>
-                          View on {platform(item.url)}
-                          <ArrowUpRight className="w-4 h-4" />
-                        </>
-                      )}
+                  {/* caption on hover */}
+                  <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4 pt-12 bg-gradient-to-t from-black/60 via-black/20 to-transparent text-white opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0">
+                    <span>
+                      <span className="block font-display text-lg leading-none">
+                        {galleryBrandLabels[item.category]}
+                      </span>
+                      <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/75">
+                        {opensPiece ? item.type : `${item.type} · ${platform(item.url)}`}
+                      </span>
                     </span>
-                  </div>
+                    <ArrowUpRight className="w-4 h-4 shrink-0" />
+                  </span>
                 </>
               );
-              return isPhoto ? (
+              return opensPiece ? (
                 <motion.button
                   key={item.id}
                   type="button"
-                  onClick={() => setOpenPhoto(photos.indexOf(item))}
-                  aria-label={`${galleryBrandLabels[item.category]} — open photo`}
+                  onClick={() => setOpenIndex(pieces.indexOf(item))}
+                  aria-label={`${galleryBrandLabels[item.category]} — open piece`}
                   {...motionProps}
                 >
                   {tile}
@@ -207,92 +243,28 @@ export default function Gallery() {
         </motion.div>
 
         {hiddenCount > 0 && (
-          <motion.div layout className="mt-8 flex justify-center">
+          <motion.div layout className="mt-10 flex justify-center">
             <button
               type="button"
               onClick={() => setExpanded((v) => !v)}
               aria-expanded={expanded}
-              className="group inline-flex items-center gap-2 rounded-full border border-border-strong bg-card px-5 py-2.5 text-sm font-medium text-foreground/80 outline-none transition-colors duration-300 hover:border-brand hover:text-foreground focus-visible:ring-2 focus-visible:ring-brand/40"
+              className="group inline-flex items-center gap-3 text-sm text-foreground outline-none"
             >
-              {expanded ? "Show less" : `Show ${hiddenCount} more`}
-              <ChevronDown
-                className={cn(
-                  "w-4 h-4 text-brand transition-transform duration-300",
-                  expanded && "rotate-180"
-                )}
-              />
+              <span className="grid place-items-center h-10 w-10 rounded-full border border-border-strong transition-all duration-500 group-hover:bg-foreground group-hover:text-background group-hover:border-foreground">
+                {expanded ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+              </span>
+              {expanded ? "Show less" : `View all ${filtered.length} pieces`}
             </button>
           </motion.div>
         )}
 
-        <p className="mt-8 text-sm text-muted-foreground">
-          Every post is organic — no ad spend. Tap a photo to view it, or a reel
-          to watch the original.
-        </p>
-
-        <Dialog.Root
-          open={activePhoto !== null}
-          onOpenChange={(open) => !open && setOpenPhoto(null)}
-        >
-          <Dialog.Portal>
-            <Dialog.Overlay className="fixed inset-0 z-50 bg-foreground/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0" />
-            <Dialog.Content
-              onKeyDown={(e) => {
-                if (e.key === "ArrowRight") stepPhoto(1);
-                if (e.key === "ArrowLeft") stepPhoto(-1);
-              }}
-              className="fixed left-1/2 top-1/2 z-50 w-[min(92vw,34rem)] -translate-x-1/2 -translate-y-1/2 outline-none data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
-            >
-              {activePhoto && (
-                <figure className="overflow-hidden rounded-2xl bg-card shadow-2xl">
-                  <img
-                    src={activePhoto.image}
-                    alt={`${galleryBrandLabels[activePhoto.category]} — photo`}
-                    className="block max-h-[78vh] w-full bg-paper object-contain"
-                  />
-                  <figcaption className="flex items-center justify-between gap-3 px-4 py-3">
-                    <Dialog.Title className="text-sm font-medium">
-                      {galleryBrandLabels[activePhoto.category]}
-                    </Dialog.Title>
-                    <Dialog.Description className="font-mono text-xs tabular-nums text-muted-foreground">
-                      {String(openPhoto! + 1).padStart(2, "0")} /{" "}
-                      {String(photos.length).padStart(2, "0")}
-                    </Dialog.Description>
-                  </figcaption>
-                </figure>
-              )}
-
-              {photos.length > 1 && (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => stepPhoto(-1)}
-                    aria-label="Previous photo"
-                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-card/90 p-2 text-foreground shadow-md outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-brand/50 sm:-left-14"
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => stepPhoto(1)}
-                    aria-label="Next photo"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-card/90 p-2 text-foreground shadow-md outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-brand/50 sm:-right-14"
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </button>
-                </>
-              )}
-
-              <Dialog.Close
-                aria-label="Close"
-                className="absolute -top-12 right-0 rounded-full bg-card/90 p-2 text-foreground shadow-md outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-brand/50"
-              >
-                <X className="h-5 w-5" />
-              </Dialog.Close>
-            </Dialog.Content>
-          </Dialog.Portal>
-        </Dialog.Root>
+        <WorkSheet
+          items={pieces}
+          index={openIndex}
+          onIndexChange={setOpenIndex}
+          onClose={() => setOpenIndex(null)}
+        />
       </div>
-    </AnimatedSection>
+    </section>
   );
 }
