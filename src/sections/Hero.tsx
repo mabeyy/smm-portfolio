@@ -1,136 +1,248 @@
-import { motion } from "framer-motion";
-import { ArrowDown, MapPin } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Grainient from "@/components/Grainient";
 
-export default function Hero() {
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const EMAIL = "villaflorjvpaula@gmail.com";
+const roles = ["Graphic Designer", "Art Director", "Photographer", "Video Editor"];
+
+const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·/";
+
+/* ---------- decodes text letter by letter ---------- */
+function Scramble({ text, delay = 0 }: { text: string; delay?: number }) {
+  const reduce = useReducedMotion();
+  const [out, setOut] = useState(reduce ? text : "");
+
+  useEffect(() => {
+    if (reduce) {
+      setOut(text);
+      return;
+    }
+    let frame = 0;
+    let raf = 0;
+    const start = performance.now() + delay * 1000;
+    const tick = (now: number) => {
+      if (now < start) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      frame++;
+      const revealed = Math.floor(frame / 2);
+      setOut(
+        text
+          .split("")
+          .map((c, i) =>
+            c === " " || i < revealed
+              ? c
+              : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]
+          )
+          .join("")
+      );
+      if (revealed < text.length) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [text, delay, reduce]);
+
   return (
-    <section className="relative min-h-screen flex items-center pt-24 md:pt-32 pb-16 overflow-hidden">
-      {/* Subtle decorative paper texture using radial gradients */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 opacity-[0.5]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 30%, rgba(107,122,94,0.06), transparent 40%), radial-gradient(circle at 80% 70%, rgba(28,22,17,0.04), transparent 40%)",
-        }}
-      />
+    <span aria-label={text}>
+      <span aria-hidden>{out || " "}</span>
+    </span>
+  );
+}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid lg:grid-cols-12 gap-10 items-end">
-          {/* Left: Editorial title block */}
-          <div className="lg:col-span-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex items-center gap-3 mb-6"
-            >
-              <span className="h-px w-10 bg-foreground/40" />
-              <span className="eyebrow">Portfolio · 2026</span>
-            </motion.div>
+/* ---------- cycles through roles, each one decoding in ---------- */
+function RoleTicker() {
+  const reduce = useReducedMotion();
+  const [i, setI] = useState(0);
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="font-display text-[clamp(3rem,9vw,7.5rem)] leading-[0.95] tracking-tight"
-            >
-              JV Paula <br />
-              <span className="italic text-brand">Villaflor</span>
-              <span className="text-foreground">.</span>
-            </motion.h1>
+  useEffect(() => {
+    if (reduce) return;
+    let id: ReturnType<typeof setInterval>;
+    const t = setTimeout(() => {
+      id = setInterval(() => setI((n) => (n + 1) % roles.length), 3200);
+    }, 2400);
+    return () => {
+      clearTimeout(t);
+      clearInterval(id);
+    };
+  }, [reduce]);
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35 }}
-              className="mt-8 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed"
-            >
-              Social Media Manager building cohesive, organic-first brand
-              presences for lifestyle and product brands — content planning,
-              visual branding, and the calm consistency that turns scrollers
-              into regulars.
-            </motion.p>
+  return <Scramble key={roles[i]} text={roles[i]} delay={i === 0 ? 0.9 : 0} />;
+}
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
-              className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4"
-            >
-              <Button asChild size="lg">
-                <a href="#contact">Start a project</a>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <a href="#experience">See recent work</a>
-              </Button>
-            </motion.div>
-          </div>
+/* ---------- year rolls up to the current one ---------- */
+function YearCounter() {
+  const reduce = useReducedMotion();
+  const year = useMotionValue(reduce ? 2026 : 2019);
+  const display = useTransform(year, (v) => Math.round(v).toString());
 
-          {/* Right: meta info column */}
-          <motion.aside
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:col-span-4 lg:pl-8 lg:border-l lg:border-border"
-          >
-            <div className="divide-y divide-border">
-              {/* Availability */}
-              <div className="pb-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand/60" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
-                  </span>
-                  <span className="eyebrow">Currently</span>
-                </div>
-                <p className="text-foreground text-lg leading-snug">
-                  Open for new freelance and contract engagements through Q3
-                  2026.
-                </p>
-              </div>
+  useEffect(() => {
+    if (reduce) return;
+    const controls = animate(year, 2026, { duration: 1.8, delay: 0.8, ease: "easeOut" });
+    return () => controls.stop();
+  }, [year, reduce]);
 
-              {/* Proof points */}
-              <div className="grid grid-cols-2 gap-6 py-6">
-                <div>
-                  <span className="block w-8 h-px bg-brand mb-3" />
-                  <p className="font-display text-3xl text-foreground leading-none">
-                    Organic
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-                    Growth built without ad spend
-                  </p>
-                </div>
-                <div>
-                  <span className="block w-8 h-px bg-brand mb-3" />
-                  <p className="font-display text-3xl text-foreground leading-none">
-                    End-to-end
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-                    Strategy, content & calendars from scratch
-                  </p>
-                </div>
-              </div>
+  return <motion.span>{display}</motion.span>;
+}
 
-              {/* Location */}
-              <div className="flex items-center gap-2 pt-6 text-sm text-muted-foreground">
-                <MapPin className="w-4 h-4 text-brand" />
-                Cagayan de Oro · Open to remote
-              </div>
-            </div>
-          </motion.aside>
-        </div>
+/* ---------- headline: per-letter masked rise ---------- */
+function SplitWord({
+  text,
+  delay = 0,
+  className = "",
+  interactive = false,
+}: {
+  text: string;
+  delay?: number;
+  className?: string;
+  interactive?: boolean;
+}) {
+  return (
+    <span className={`inline-flex overflow-hidden pb-[0.12em] -mb-[0.12em] ${className}`}>
+      {text.split("").map((char, i) => (
+        <motion.span
+          key={i}
+          className={
+            interactive
+              ? "inline-block cursor-default transition-colors duration-300 hover:text-brand-hover hover:[font-style:italic] hover:-translate-y-[0.04em]"
+              : "inline-block"
+          }
+          initial={{ y: "110%", rotate: 8 }}
+          animate={{ y: "0%", rotate: 0 }}
+          transition={{ duration: 0.9, delay: delay + i * 0.045, ease }}
+        >
+          {char === " " ? " " : char}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
 
+/* ---------- hero ---------- */
+export default function Hero() {
+  const reduce = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  // on scroll the words drift apart
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const leftX = useTransform(scrollYProgress, [0, 1], ["0%", "-12%"]);
+  const rightX = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
+  const fade = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative min-h-svh flex flex-col px-3 pb-3 pt-20 md:px-6 md:pb-6 md:pt-24 overflow-hidden"
+    >
+      {/* animated grain gradient */}
+      <div aria-hidden className="absolute inset-0 -z-10 opacity-80">
+        <Grainient
+          color1="#faf7f2"
+          color2="#ebe2d3"
+          color3="#d9c9b2"
+          timeSpeed={reduce ? 0 : 0.18}
+          warpStrength={0.8}
+          warpAmplitude={40}
+          contrast={1.05}
+          saturation={0.9}
+          grainAmount={0.06}
+          grainAnimated={!reduce}
+          zoom={1.1}
+        />
+      </div>
+
+      <div className="relative flex-1 flex flex-col justify-center px-3 md:px-6 lg:px-10">
+        {/* meta line */}
         <motion.div
+          style={{ opacity: fade }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="mt-20 flex items-center gap-3 text-xs uppercase tracking-[0.28em] text-muted-foreground"
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="flex items-center justify-center gap-3 md:justify-between font-mono text-[10px] md:text-[11px] uppercase tracking-[0.25em] md:tracking-[0.3em] text-muted-foreground mb-5 md:mb-10"
         >
-          <ArrowDown className="w-4 h-4 animate-bounce" />
-          Scroll for the work
+          <span>
+            Portfolio — <YearCounter />
+          </span>
+          <span aria-hidden className="h-1 w-1 rounded-full bg-border-strong md:hidden" />
+          <span className="text-foreground">
+            <RoleTicker />
+          </span>
+        </motion.div>
+
+        {/* the title line */}
+        <h1 className="font-display text-[32vw] md:text-[clamp(3.6rem,13vw,14rem)] leading-[0.86] md:leading-[0.9] tracking-[-0.02em]">
+          <span className="sr-only">Creative works by JV Paula Villaflor</span>
+          <span aria-hidden className="flex flex-col items-center text-center">
+            <motion.span style={{ x: leftX }} className="inline-block">
+              <SplitWord text="Creative" delay={0.15} interactive />
+            </motion.span>
+            <motion.span style={{ x: rightX }} className="inline-flex items-end">
+              <SplitWord text="works" delay={0.4} className="italic text-brand" interactive />
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 12, delay: 0.9 }}
+                className="inline-block mb-[0.16em] ml-[0.04em] h-[0.12em] w-[0.12em] rounded-full bg-foreground"
+              />
+            </motion.span>
+          </span>
+        </h1>
+
+        {/* call to action */}
+        <motion.div
+          style={{ opacity: fade }}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2, ease }}
+          className="mt-10 md:mt-14 flex justify-center"
+        >
+          <Button asChild size="lg" className="group rounded-full px-7 h-12 md:h-10 w-full max-w-xs md:w-auto">
+            <a href="#contact">
+              Start a project
+              <ArrowUpRight className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </Button>
         </motion.div>
       </div>
+
+      {/* footer line */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.8 }}
+        className="relative mt-10 flex items-center justify-between gap-4 h-12 md:h-14 px-3 md:px-6 lg:px-10 shrink-0 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-muted-foreground"
+      >
+        <a
+          href={`mailto:${EMAIL}`}
+          className="normal-case tracking-normal font-sans text-xs sm:text-sm text-foreground hover:text-brand transition-colors truncate"
+        >
+          {EMAIL}
+        </a>
+        <a href="#gallery" className="flex items-center gap-3 hover:text-foreground transition-colors">
+          Scroll
+          <span className="relative h-px w-6 sm:w-10 overflow-hidden bg-border-strong">
+            <motion.span
+              className="absolute inset-y-0 left-0 w-1/2 bg-foreground"
+              animate={reduce ? undefined : { x: ["-100%", "200%"] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </span>
+        </a>
+      </motion.div>
     </section>
   );
 }
