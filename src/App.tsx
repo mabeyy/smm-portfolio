@@ -8,6 +8,7 @@ import Results from "@/sections/Results";
 import ToolsSkills from "@/sections/ToolsSkills";
 import Contact from "@/sections/Contact";
 import Footer from "@/sections/Footer";
+import SectionProgress from "@/components/SectionProgress";
 
 export default function App() {
   return (
@@ -16,14 +17,15 @@ export default function App() {
       <main>
         <Hero />
         <About />
+        <Gallery />
         <Services />
         <Experience />
-        <Gallery />
         <Results />
         <ToolsSkills />
         <Contact />
       </main>
       <Footer />
+      <SectionProgress />
     </>
   );
 }
